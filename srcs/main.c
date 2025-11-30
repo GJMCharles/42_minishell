@@ -20,9 +20,9 @@ int	process_command_line(char **command_line)
 	if (ft_memcmp(line, "exit", 4) == 0)
 	{
 		free(line);
-		return (-1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 void	error_found(const char *message)
@@ -46,7 +46,7 @@ int	main(void)
 		if (!input)
 			return (free(input), error_found("Forced EXIT"), EXIT_FAILURE);
 		add_history(input);
-		if (process_command_line(&input) == -1)
+		if (!process_command_line(&input))
 			break ;
 		free(input);
 	}
