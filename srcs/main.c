@@ -44,7 +44,7 @@ int	main(void)
 	{
 		input = readline(prompt);
 		if (!input)
-			return (free(input), error_found("Forced EXIT"), EXIT_FAILURE);
+			return (error_found("Forced EXIT"), EXIT_FAILURE);
 		add_history(input);
 		if (!process_command_line(&input))
 			break ;
