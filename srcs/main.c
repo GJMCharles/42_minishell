@@ -47,7 +47,10 @@ int	main(void)
 			return (error_found("Forced EXIT"), EXIT_FAILURE);
 		add_history(input);
 		if (!process_command_line(&input))
+		{
+			free(input);
 			break ;
+		}
 		free(input);
 	}
 	return (EXIT_SUCCESS);
