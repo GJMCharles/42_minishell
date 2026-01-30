@@ -13,31 +13,4 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-/**
- * DEFINES
- */
-
-/**
- * INCLUDES
- */
-# include <stdio.h>
-# include <string.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft.h"
-
-/**
- * STRUCTURES
- */
-typedef struct s_history
-{
-	char				*command;
-	int					nb_command;
-	struct s_history	*next;	
-}	t_history;
-
-/**
- * PROTOTYPES
- */
-
 #endif

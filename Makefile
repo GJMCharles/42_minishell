@@ -28,72 +28,61 @@ CFLAGS := \
 RM := rm -f -v
 RM_DIR := rmdir -v
 
-LIBRARY := ./includes
+NAME := minishell
+
+LIBRARY := ./includes/
 
 # Project Libft (+GetNextLine/+FtPrintF)
-LIBFT := $(addprefix $(LIBRARY)/, libft)
+LIBFT := $(addprefix $(LIBRARY), libft)
 
 CPPFLAGS := \
-	-I $(LIBRARY) \
-	-I $(LIBFT)
+-I $(LIBRARY) \
+-I $(LIBFT)
 
 # Specifies options for the linker:
 # example: -L/usr/local/lib
 LDFLAGS := \
-	-L $(LIBFT)
+-L $(LIBFT)
 
 # Lists libraries to link with:
 # example: -lm -lpthread
 LDLIBS := \
-	-lft \
-	-lreadline
-
-NAME := minishell
-
-DIR_MANDATORY := srcs
-
-OBJECTS_DIR := .objects
+-lft \
+-lreadline
 
 SOURCES_MANDATORY := \
-	main.c
+	main.c \
+	history.c
 
-OBJECTS_MANDATORY := \
-$(patsubst \
-	$(DIR_MANDATORY)/%.c,\
-	$(OBJECTS_DIR)/%.o,\
-	$(addprefix $(DIR_MANDATORY)/, $(SOURCES_MANDATORY))\
+OBJECTS_MANDATORY := $(patsubst ./srcs/%.c, \
+	.objects/%.o, \
+	$(addprefix ./srcs/, $(SOURCES_MANDATORY)) \
 )
 
-DEPS_MANDATORY := $(OBJECTS_MANDATORY:.o=.d)
+DEPENDENCIES_MANDATORY :=
 
--include $(DEPS_MANDATORY)
+-include $(DEPENDENCIES_MANDATORY)
+
+OBJECTS_DIR := .objects/
 
 $(OBJECTS_DIR):
 	mkdir -p $@
 
-$(OBJECTS_DIR)/%.o: $(DIR_MANDATORY)/%.c | $(OBJECTS_DIR)
+$(OBJECTS_DIR)%.o: ./srcs/%.c | $(OBJECTS_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-$(NAME): LIBS $(OBJECTS_MANDATORY)
-
-LIBS:
-	$(MAKE) -C $(LIBFT)
+$(NAME): $(OBJECTS_MANDATORY)
+	@$(MAKE) -C $(LIBFT) all
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 all: $(NAME)
-	$(CC) $(CFLAGS) $(OBJECTS_MANDATORY) $(LDFLAGS) $(LDLIBS) -o $^
-	@echo -e "Generated executable: $^"
 
 clean:
 	@$(MAKE) -C $(LIBFT) clean
-	@$(RM) $(OBJECTS_MANDATORY)
-	@$(RM) $(DEPS_MANDATORY)
-	@if [ -d  $(OBJECTS_DIR) ]; then \
-		$(RM_DIR) -p $(OBJECTS_DIR); \
-	fi
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
-	@$(RM) ./$(NAME)/$(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 
@@ -104,10 +93,4 @@ norm:
 	-norminette -R $(shell find ./includes -type f -name "*.h")
 	-norminette -R $(shell find ./srcs -type f -name "*.c")
 
-.SECONDARY: $(OBJECTS_MANDATORY)
-
-.PRECIOUS: $(OBJECTS_DIR)
-
-.SILENT:
-
-.PHONY: all clean fclean re debug norm
+.PHONY: all clean fclean re
