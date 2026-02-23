@@ -13,20 +13,34 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
+
 # include <signal.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <termios.h>
 # include "libft.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 512
 # endif
 
+# define ERROR_XS "failed to initiate `sigaction`"
 # define ERROR_X0 "failed to allocate memory"
 # define ERROR_X1 "failed to read standard input"
 # define ERROR_X2 "an unexpected error has occured"
 # define ERROR_X3 ""
 
 typedef unsigned long int	uli;
+
+typedef enum {
+	KEY_NORMAL,
+	KEY_ESC,
+	KEY_UP,
+	KEY_DOWN,
+} e_keycode;
 
 typedef struct s_history
 {

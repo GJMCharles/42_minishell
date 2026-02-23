@@ -9,8 +9,9 @@
                 "${workspaceFolder}/includes/libft"
             ],
             "defines": [],
-            "cStandard": "c17",
-            "cppStandard": "c++14",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
             "intelliSenseMode": "linux-clang-x64"
         }
     ],

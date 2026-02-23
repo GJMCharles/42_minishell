@@ -12,10 +12,27 @@
 
 #include "minishell.h"
 
-void	handle_signal(int sig)
+volatile sig_atomic_t g_flag = 0;
+
+void	signal_handler(int sig)
 {
-	ft_putstr_fd("# Signal Code ", STDOUT_FILENO);
-	ft_putnbr_fd(sig, STDOUT_FILENO);
+	/**
+	 * Because we are using `read` instead of `readline`
+	 * it is nessecary to ignore the signal of `CTRL + C`
+	 * Otherwise, the executable closes unexpectidaly
+	 */
+	(void) sig;
+	// g_flag = sig;
+}
+
+bool	init_signal(struct sigaction sa)
+{
+	sa.sa_handler = signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (perror(ERROR_XS), false);
+	return (true);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -24,18 +41,25 @@ int	main(int argc, char *argv[], char *envp[])
 	(void) argv;
 	(void) envp;
 
-	int		stdio;
+	struct sigaction sa;
+
+	int		output_status;
 	char	*command_line;
 
-	stdio = STDOUT_FILENO;
-	while (stdio == STDOUT_FILENO)
+	ft_memset(&sa, 0, sizeof(sa));
+	if (!init_signal(sa))
+		return (perror(ERROR_XS), EXIT_FAILURE);
+	output_status = 0;
+	while (!output_status)
 	{
 		(void) write(STDOUT_FILENO, "~$> ", 4);
 		command_line = get_input();
-		stdio = minishell(command_line, envp);
+		// ft_putstr_fd(command_line, STDOUT_FILENO);
+		// output_status = minishell(command_line, envp);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		free(command_line);
 	}
-	if (stdio == STDERR_FILENO)
+	if (output_status == STDERR_FILENO)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

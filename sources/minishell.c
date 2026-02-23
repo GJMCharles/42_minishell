@@ -30,8 +30,8 @@ int	minishell(char *command_line, char *envp[])
 	(void) envp;
 	if (!set_command_pwd(&data.current_working_dir))
 		return (clear_minishell_data(&data), STDERR_FILENO);
-	ft_putstr_fd("Command `pwd`: ", STDOUT_FILENO);
-	ft_putstr_fd(data.current_working_dir, STDOUT_FILENO);
-	ft_putstr_fd("\n", STDOUT_FILENO);
-	return (1);
+
+	// ft_putstr_fd("Command `pwd`: ", STDOUT_FILENO);
+	// ft_putstr_fd(data.current_working_dir, STDOUT_FILENO);
+	return (0);
 }

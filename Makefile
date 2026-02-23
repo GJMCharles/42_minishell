@@ -22,7 +22,7 @@ CFLAGS := \
 	-Wstack-protector -Wconversion -Wstrict-overflow=5 \
 	-D_FORTIFY_SOURCE=2 -fstack-protector-strong \
 	-fno-omit-frame-pointer \
-	-fPIE -fPIC -O2 -g
+	-fPIE -fPIC -O2 -g3
 
 # Delete files & empty directories
 RM := rm -f -v
@@ -53,10 +53,11 @@ LDLIBS := \
 
 SOURCES_MANDATORY := \
 	main.c \
-	minishell.c \
+	signal.c \
 	input.c \
 	history.c \
 	command_line.c \
+	minishell.c \
 	cmd_pwd.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
