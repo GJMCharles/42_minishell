@@ -19,7 +19,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-
 int main() {
     char *input; // readline renvoie un pointeur vers la chaîne lue
 

@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_recalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 01:49:34 by grcharle          #+#    #+#             */
-/*   Updated: 2025/07/30 11:59:36 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/23 07:43:28 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/23 07:44:29 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void		*ft_recalloc(void *s, size_t nmemb, size_t p_size, size_t n_size)
 {
-	void		*alloc;
-	long int	lnmemb;
-	long int	lsize;
-	size_t		i;
+	void	*dest;
 
-	lnmemb = (long int) nmemb;
-	lsize = (long int) size;
-	if ((lnmemb < 0 && lsize != 0) || (lsize < 0 && lnmemb != 0))
-		return (0);
-	if (INT_MAX < size)
-		return ((void *) NULL);
-	alloc = malloc(size * nmemb);
-	if (!alloc)
-		return (0);
-	i = 0;
-	ft_bzero(alloc, (size * nmemb));
-	return (alloc);
+	if (!s)
+		return ((void *) 0);
+	dest = ft_calloc(nmemb, n_size);
+	if (!dest)
+	{
+		free(s);
+		return ((void *) 0);
+	}
+	if (p_size < n_size)
+		ft_memcpy(dest, s, p_size);
+	else
+		ft_memcpy(dest, s, n_size);
+	free(s);
+	return (dest);
 }

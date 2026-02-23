@@ -6,7 +6,7 @@
 #    By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/29 11:55:25 by grcharle          #+#    #+#              #
-#    Updated: 2025/08/28 06:53:08 by grcharle         ###   ########.fr        #
+#    Updated: 2025/12/30 01:56:43 by grcharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ ft_putchar_fd.c \
 ft_putendl_fd.c \
 ft_putnbr_fd.c \
 ft_putstr_fd.c \
+ft_recalloc.c \
 ft_split.c \
 ft_strchr.c \
 ft_strdup.c \
@@ -122,14 +123,6 @@ fclean: clean
 	$(RM) -v $(NAME_BONUS)
 
 re: fclean all
-
-info:
-	echo -e "Mandatory objects: $(OBJECTS_MANDATORY)"
-	echo -e "Bonus objects: $(OBJECTS_BONUS)"
-	echo -e "Mandatory dependencies: $(DEPS_MANDATORY)"
-	echo -e "Bonus dependencies: $(DEPS_BONUS)"
-	echo -e "CFLAGS: $(CFLAGS)"
-	echo -e "CPPFLAGS: $(CPPFLAGS)"
 
 norm:
 	norminette -R .

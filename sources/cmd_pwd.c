@@ -1,36 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cmd_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 17:24:35 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/22 17:24:37 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/23 13:43:21 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/23 14:28:53 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+/**
+ * Command PWD
+ */
+char	*get_current_working_directory(void)
 {
-	(void) argc;
-	(void) argv;
-	(void) envp;
+	char	*current_working_dir;
 
-	int		stdio;
-	char	*command_line;
-
-	stdio = STDOUT_FILENO;
-	while (stdio == STDOUT_FILENO)
-	{
-		(void) write(STDOUT_FILENO, "#$> ", 4);
-		command_line = get_input();
-		stdio = minishell(command_line, envp);
-		(void) write(stdio, "\n", 1);
-		free(command_line);
-	}
-	if (stdio == STDERR_FILENO)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	current_working_dir = (char *) ft_calloc(sizeof(char), BUFFER_SIZE);
+	if (!current_working_dir)
+		return (perror(ERROR_X0), (char *) NULL);
+	current_working_dir = getcwd(current_working_dir, (BUFFER_SIZE - 1));
+	return (current_working_dir);
 }

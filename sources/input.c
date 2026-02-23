@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 17:24:35 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/22 17:24:37 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/23 12:33:13 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/23 12:33:15 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+char	*get_input(void)
 {
-	(void) argc;
-	(void) argv;
-	(void) envp;
+	char	*input;
+	char	buffer[2];
+	int		bytes_read;
 
-	int		stdio;
-	char	*command_line;
-
-	stdio = STDOUT_FILENO;
-	while (stdio == STDOUT_FILENO)
+	input = ft_calloc(sizeof(char), 1);
+	if (!input)
+		return ((char *) NULL);
+	while (1)
 	{
-		(void) write(STDOUT_FILENO, "#$> ", 4);
-		command_line = get_input();
-		stdio = minishell(command_line, envp);
-		(void) write(stdio, "\n", 1);
-		free(command_line);
+		ft_bzero(buffer, 2);
+		bytes_read = (int) read(STDIN_FILENO, buffer, 1);
+		if (bytes_read < 1 || buffer[0] == '\n')
+			break ;
+		input = ft_strjoin(input, buffer);
 	}
-	if (stdio == STDERR_FILENO)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	return (input);
 }

@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   command_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 17:24:35 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/22 17:24:37 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/23 14:27:51 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/23 14:29:03 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+char	**get_command_lines(char *command_line)
 {
-	(void) argc;
-	(void) argv;
-	(void) envp;
+	char	**lines;
+	uli		nb_split;
 
-	int		stdio;
-	char	*command_line;
-
-	stdio = STDOUT_FILENO;
-	while (stdio == STDOUT_FILENO)
+	lines = ft_split(command_line, ';');
+	nb_split = 0;
+	if (!lines)
+		return ((char **) NULL);
+	while (lines++)
 	{
-		(void) write(STDOUT_FILENO, "#$> ", 4);
-		command_line = get_input();
-		stdio = minishell(command_line, envp);
-		(void) write(stdio, "\n", 1);
-		free(command_line);
+		printf("@ %s\n", *lines);
 	}
-	if (stdio == STDERR_FILENO)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	free(lines);
+	return (lines);
 }

@@ -12,14 +12,8 @@
 
 #include "minishell.h"
 
-#include <stdio.h>
-#include <stdlib.h> // Non strictement nécessaire ici, mais bonne pratique
-
-#define MAX_SIZE 100 // Définir une taille maximale pour le buffer
-
 int main() {
-    // 1. Déclarer un tableau de caractères (buffer) pour stocker l'entrée
-    char buffer[MAX_SIZE];
+    char buffer[BUFFER_SIZE];
 
     // 2. Afficher le prompt (le message demandant l'entrée)
     // printf("Veuillez entrer votre nom (max %d caractères) : ", MAX_SIZE - 1);
@@ -28,7 +22,7 @@ int main() {
     // Paramètres : (buffer, taille_max, source)
 	while(1)
 	{
-		if (fgets(buffer, MAX_SIZE, stdin) != NULL) {
+		if (fgets(buffer, BUFFER_SIZE, stdin) != NULL) {
 			// La lecture a réussi.
 
 			// Note Importante : fgets inclut le caractère de nouvelle ligne ('\n')
