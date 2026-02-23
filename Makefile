@@ -30,10 +30,11 @@ RM_DIR := rmdir -v
 
 NAME := minishell
 
-LIBRARY := ./includes/
+LIBRARY := ./includes
+SOURCES := ./sources
 
 # Project Libft (+GetNextLine/+FtPrintF)
-LIBFT := $(addprefix $(LIBRARY), libft)
+LIBFT := $(addprefix $(LIBRARY)/, libft)
 
 CPPFLAGS := \
 -I $(LIBRARY) \
@@ -54,9 +55,9 @@ SOURCES_MANDATORY := \
 	main.c \
 	history.c
 
-OBJECTS_MANDATORY := $(patsubst ./srcs/%.c, \
+OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
-	$(addprefix ./srcs/, $(SOURCES_MANDATORY)) \
+	$(addprefix $(SOURCES)/, $(SOURCES_MANDATORY)) \
 )
 
 DEPENDENCIES_MANDATORY :=
@@ -68,7 +69,7 @@ OBJECTS_DIR := .objects/
 $(OBJECTS_DIR):
 	mkdir -p $@
 
-$(OBJECTS_DIR)%.o: ./srcs/%.c | $(OBJECTS_DIR)
+$(OBJECTS_DIR)%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS_MANDATORY)
@@ -87,10 +88,10 @@ fclean: clean
 re: fclean all
 
 debug: re
-	-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./$(NAME)
+	-valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --suppressions=readline.supp -s ./$(NAME)
 
 norm:
 	-norminette -R $(shell find ./includes -type f -name "*.h")
-	-norminette -R $(shell find ./srcs -type f -name "*.c")
+	-norminette -R $(shell find ./sources -type f -name "*.c")
 
 .PHONY: all clean fclean re

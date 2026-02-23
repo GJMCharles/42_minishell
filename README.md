@@ -1,5 +1,7 @@
 # 42_Minishell
 
-Collaborators:
-- @GJMCharles
-- @BennyBlanco42
+## Description
+
+## Instructions
+
+## Resources

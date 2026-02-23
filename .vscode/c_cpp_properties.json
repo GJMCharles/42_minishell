@@ -4,7 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/includes"
+                "${workspaceFolder}/includes",
+                "${workspaceFolder}/sources",
+                "${workspaceFolder}/includes/libft"
             ],
             "defines": [],
             "cStandard": "c17",
