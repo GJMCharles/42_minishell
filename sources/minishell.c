@@ -32,16 +32,18 @@ void	clear_minishell_data(t_minishell *data)
 
 int	minishell(char *command_line, char *envp[])
 {
+	(void) command_line;
 	t_minishell	data;
 
+	(void) data;
 	(void) envp;
 	data.current_path = get_current_working_directory();
 	if (!data.current_path)
-		return (clear_minishell_data(&data), -1);
-	data.commands = get_command_lines(command_line);
-	if (!data.commands)
-		return (clear_minishell_data(&data), -1);
+		return (clear_minishell_data(&data), STDERR_FILENO);
+	free(data.current_path);
+	// 	return (clear_minishell_data(&data), -1);
 	// update_history(command_line);
-	clear_minishell_data(&data);
-	return (STDERR_FILENO);
+	// clear_minishell_data(&data);
+	// free(command_line);
+	return (1);
 }
