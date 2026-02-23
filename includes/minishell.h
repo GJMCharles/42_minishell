@@ -36,7 +36,7 @@ typedef struct s_history
 
 typedef struct s_minishell
 {
-	char	*current_path;
+	char	*current_working_dir;
 	char	**commands;
 }	t_minishell;
 
@@ -48,7 +48,7 @@ char	**get_command_lines(char *command_line);
 /**
  * cmd_pwd.c
  */
-char	*get_current_working_directory(void);
+char	*set_command_pwd(char **command_line);
 
 /**
  * history.c

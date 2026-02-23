@@ -17,17 +17,8 @@ void	clear_minishell_data(t_minishell *data)
 	uli		index;
 
 	index = 0;
-	if (data->current_path)
-		free(data->current_path);
-	if (data->commands)
-	{
-		while (data->commands[index] != NULL)
-		{
-			free(data->commands[index]);
-			index += 1;
-		}
-		free(data->commands);
-	}
+	if (data->current_working_dir)
+		free(data->current_working_dir);
 }
 
 int	minishell(char *command_line, char *envp[])
@@ -37,13 +28,10 @@ int	minishell(char *command_line, char *envp[])
 
 	(void) data;
 	(void) envp;
-	data.current_path = get_current_working_directory();
-	if (!data.current_path)
+	if (!set_command_pwd(&data.current_working_dir))
 		return (clear_minishell_data(&data), STDERR_FILENO);
-	free(data.current_path);
-	// 	return (clear_minishell_data(&data), -1);
-	// update_history(command_line);
-	// clear_minishell_data(&data);
-	// free(command_line);
+	ft_putstr_fd("Command `pwd`: ", STDOUT_FILENO);
+	ft_putstr_fd(data.current_working_dir, STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	return (1);
 }
