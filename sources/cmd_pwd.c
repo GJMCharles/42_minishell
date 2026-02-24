@@ -29,8 +29,3 @@ char	*set_command_pwd(char **command_line)
 	*command_line = data;
 	return (data);
 }
-
-// char	*get_command_pwd(t_minishell ms)
-// {
-// 	return (ms.current_working_dir);
-// }

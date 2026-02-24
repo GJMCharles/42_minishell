@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_line.c                                     :+:      :+:    :+:   */
+/*   stdin_mode.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 14:27:51 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/23 14:29:03 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/24 11:39:01 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/24 11:39:12 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//char	**get_command_lines(char *command_line)
-//{
-//	(void) command_line;
-//	// char	**lines;
-//	// uli		nb_split;
+void set_raw_mode(struct termios *original)
+{
+	struct termios	raw;
 
-//	// lines = ft_split(command_line, ';');
-//	// nb_split = 0;
-//	// if (!lines)
-//	// 	return ((char **) NULL);
-//	// while (lines++)
-//	// {
-//	// 	printf("@ %s\n", *lines);
-//	// }
-//	// free(lines);
-//	// return (lines);
-//	return (NULL);
-//}
+	tcgetattr(STDIN_FILENO, original);
+	raw = *original;
+	raw.c_lflag &= ~(ICANON | ECHO | ISIG);
+	raw.c_cc[VMIN] = 1;
+	raw.c_cc[VTIME] = 0;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
+
+void restore_mode(struct termios *original)
+{
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, original);
+}

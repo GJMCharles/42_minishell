@@ -18,8 +18,9 @@ MAKEFLAGS += --no-print-directory
 
 CC := cc
 CFLAGS := \
-	-Wall -Wextra -Werror -Wpedantic -Wformat -Wformat-security \
-	-Wstack-protector -Wconversion -Wstrict-overflow=5 \
+	-Wall -Wextra -Werror \
+	-Wpedantic -Wformat -Wformat-security \
+	-Wstack-protector -Wstrict-overflow=5 \
 	-D_FORTIFY_SOURCE=2 -fstack-protector-strong \
 	-fno-omit-frame-pointer \
 	-fPIE -fPIC -O2 -g3
@@ -57,7 +58,8 @@ SOURCES_MANDATORY := \
 	history.c \
 	command_line.c \
 	minishell.c \
-	cmd_pwd.c
+	cmd_pwd.c \
+	stdin_mode.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
@@ -68,12 +70,12 @@ DEPENDENCIES_MANDATORY :=
 
 -include $(DEPENDENCIES_MANDATORY)
 
-OBJECTS_DIR := .objects/
+OBJECTS_DIR := .objects
 
 $(OBJECTS_DIR):
 	mkdir -p $@
 
-$(OBJECTS_DIR)%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
+$(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS_MANDATORY)
@@ -84,9 +86,13 @@ all: $(NAME)
 
 clean:
 	@$(MAKE) -C $(LIBFT) clean
+	@$(RM) $(OBJECTS_MANDATORY)
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
+	@if [ -d  $(OBJECTS_DIR) ]; then \
+		$(RM_DIR) -p $(OBJECTS_DIR); \
+	fi
 	@$(RM) $(NAME)
 
 re: fclean all

@@ -12,3 +12,38 @@
 
 #include "minishell.h"
 
+volatile sig_atomic_t g_signal_received = 0;
+
+void	set_signal_received(int sig)
+{
+	g_signal_received = sig;
+}
+
+int	get_signal_received(void)
+{
+	return (g_signal_received);
+}
+
+void	signal_handler(int sig)
+{
+	/**
+	 * Because we are using `read` instead of `readline`
+	 * it is nessecary to ignore the signal of `CTRL + C`
+	 * Otherwise, the executable closes unexpectidaly
+	 */
+	(void) sig;
+	// g_signal_received = sig;
+}
+
+bool	setup_signal_handlers(void)
+{
+	struct sigaction	sa;
+
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (perror(ERROR_XS), false);
+	return (true);
+}

@@ -12,22 +12,22 @@
 
 #include "minishell.h"
 
-void	clear_minishell_data(t_minishell *data)
-{
-	if (data->current_working_dir)
-		free(data->current_working_dir);
-}
+//void	clear_minishell_data(t_minishell *data)
+//{
+//	if (data->current_working_dir)
+//		free(data->current_working_dir);
+//}
 
-int	minishell(char *command_line, char *envp[])
-{
-	(void) command_line;
-	t_minishell	data;
+//int	minishell(char *command_line, char *envp[])
+//{
+//	(void) command_line;
+//	t_minishell	data;
 
-	(void) data;
-	(void) envp;
-	if (!set_command_pwd(&data.current_working_dir))
-		return (clear_minishell_data(&data), STDERR_FILENO);
-	// ft_putstr_fd("Command `pwd`: ", STDOUT_FILENO);
-	// ft_putstr_fd(data.current_working_dir, STDOUT_FILENO);
-	return (0);
-}
+//	(void) data;
+//	(void) envp;
+//	if (!set_command_pwd(&data.current_working_dir))
+//		return (clear_minishell_data(&data), STDERR_FILENO);
+//	// ft_putstr_fd("Command `pwd`: ", STDOUT_FILENO);
+//	// ft_putstr_fd(data.current_working_dir, STDOUT_FILENO);
+//	return (0);
+//}
