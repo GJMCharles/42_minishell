@@ -12,21 +12,23 @@
 
 #include "minishell.h"
 
-void	set_raw_mode(struct termios *original_mode)
+void set_raw_mode(struct termios *original)
 {
 	struct termios raw;
 
-	tcgetattr(STDIN_FILENO, original_mode);
-	raw = *original_mode;
-	raw.c_cflag &= (ICANON | ECHO | ISIG);
+	tcgetattr(STDIN_FILENO, original);
+	raw = *original;
+	// Disable canonical mode and echo
+	raw.c_lflag &= (unsigned int) ~(ICANON | ECHO);
+	// Set minimum read to 1 character
 	raw.c_cc[VMIN] = 1;
 	raw.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
-void	restore_mode(struct termios *original_mode)
+void restore_mode(struct termios *original)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, original_mode);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, original);
 }
 
 char	*get_input(void)
@@ -39,16 +41,17 @@ char	*get_input(void)
 	input = ft_calloc(sizeof(char), 1);
 	if (!input)
 		return (NULL);
-	set_raw_mode(&original_mode);
+
 	while (1)
 	{
 		ft_bzero(buffer, 2);
+		set_raw_mode(&original_mode);
 		bytes_read = (int) read(STDIN_FILENO, buffer, 1);
+		restore_mode(&original_mode);
 		if (bytes_read < 1 || buffer[0] == '\n')
 			break ;
 		input = ft_strjoin(input, buffer);
 		break ;
 	}
-	restore_mode(&original_mode);
 	return (input);
 }

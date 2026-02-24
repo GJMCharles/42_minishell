@@ -17,7 +17,6 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	void		*alloc;
 	long int	lnmemb;
 	long int	lsize;
-	size_t		i;
 
 	lnmemb = (long int) nmemb;
 	lsize = (long int) size;
@@ -28,7 +27,6 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	alloc = malloc(size * nmemb);
 	if (!alloc)
 		return (0);
-	i = 0;
 	ft_bzero(alloc, (size * nmemb));
 	return (alloc);
 }

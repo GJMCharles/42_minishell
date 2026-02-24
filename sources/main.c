@@ -52,7 +52,7 @@ int	main(int argc, char *argv[], char *envp[])
 	output_status = 0;
 	while (!output_status)
 	{
-		(void) write(STDOUT_FILENO, "~$> ", 4);
+		// write(STDOUT_FILENO, "~$> ", 4);
 		command_line = get_input();
 		// ft_putstr_fd(command_line, STDOUT_FILENO);
 		// output_status = minishell(command_line, envp);

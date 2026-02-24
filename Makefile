@@ -48,8 +48,7 @@ LDFLAGS := \
 # Lists libraries to link with:
 # example: -lm -lpthread
 LDLIBS := \
--lft \
--lreadline
+-lft
 
 SOURCES_MANDATORY := \
 	main.c \

@@ -14,17 +14,19 @@
 
 char	**get_command_lines(char *command_line)
 {
-	char	**lines;
-	uli		nb_split;
+	(void) command_line;
+	// char	**lines;
+	// uli		nb_split;
 
-	lines = ft_split(command_line, ';');
-	nb_split = 0;
-	if (!lines)
-		return ((char **) NULL);
-	while (lines++)
-	{
-		printf("@ %s\n", *lines);
-	}
-	free(lines);
-	return (lines);
+	// lines = ft_split(command_line, ';');
+	// nb_split = 0;
+	// if (!lines)
+	// 	return ((char **) NULL);
+	// while (lines++)
+	// {
+	// 	printf("@ %s\n", *lines);
+	// }
+	// free(lines);
+	// return (lines);
+	return (NULL);
 }
