@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"libft.h": "c"
-	},
-	"workbench.colorCustomizations": {
-		"editorRuler.foreground": "#ff4081"
-	},
-	"C_Cpp.default.compilerPath": "/usr/bin/clang-12"
-}
