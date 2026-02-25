@@ -12,6 +12,24 @@
 
 #include "minishell.h"
 
+int	parse_utf8_char(t_uc c, t_uc **b, t_utf8_char *s, t_ui *l)
+{
+	t_uc	*ptr;
+
+	s->utf8_char[s->char_bytes++] = c;
+	if (s->char_bytes == s->needed)
+	{
+		ptr = (t_uc *) ft_recalloc(*b, sizeof(t_uc), *l, *l + s->needed + 1);
+		if (!ptr)
+			return (-1);
+		ft_memmove(ptr, s->utf8_char, s->needed);
+		*l += s->needed;
+		*b = ptr;
+		return (1);
+	}
+	return (0);
+}
+
 t_ui	utf8_len(t_uc c)
 {
 	if (c < 0x80)
@@ -25,22 +43,13 @@ t_ui	utf8_len(t_uc c)
 	return (1);
 }
 
-void	assign_char_to_buffer(t_uc **buffer, t_utf8_state *state, t_ui *size)
-{
-	t_uc	*ptr;
-
-	ptr = (t_uc *) ft_recalloc(*buffer, sizeof(t_uc), *size, *size + state->needed + 1);
-	ft_memmove(ptr, state->utf8_char, state->needed);
-	*size += state->needed;
-	*buffer = ptr;
-}
-
-t_uc	*get_utf8_char_from_input(void)
+t_uc	*get_utf8_char_from_stdin(void)
 {
 	t_uc			*buffer;
-	t_utf8_state	state;
+	t_utf8_char		state;
 	t_ui			size;
 	t_uc			c;
+	int				status;
 
 	buffer = (t_uc *) ft_calloc(sizeof(t_uc), 1);
 	if (!buffer)
@@ -52,25 +61,13 @@ t_uc	*get_utf8_char_from_input(void)
 		if (state.char_bytes == 0)
 		{
 			ft_bzero(state.utf8_char, 4);
-			state.utf8_char[0] = c;
 			state.needed = utf8_len(c);
-			if (state.needed == 1)
-			{
-				assign_char_to_buffer(&buffer, &state, &size);
-				break ;
-			}
-			state.char_bytes += 1;
 		}
-		else
-		{
-			state.utf8_char[state.char_bytes] = c;
-			state.char_bytes += 1;
-			if (state.char_bytes == state.needed)
-			{
-				assign_char_to_buffer(&buffer, &state, &size);
-				break ;
-			}
-		}
+		status = parse_utf8_char(c, &buffer, &state, &size);
+		if (status == -1)
+			return (NULL);
+		if (status == 1)
+			break ;
 	}
 	return (buffer);
 }

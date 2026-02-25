@@ -12,76 +12,23 @@
 
 #include "minishell.h"
 
-char* read_utf8_line()
+char	*append_char_to_input(char **input, t_uc *c)
 {
-	//size_t capacity = 4;
-	size_t size = 0;
-	char *buffer;
-	t_utf8_state	state;
+	size_t	len;
 
-	buffer = (char *) ft_calloc(sizeof(char), 1);
-	if (!buffer)
+	len = ft_strlen(*input);
+	*input = (char *) ft_recalloc(
+			*input, sizeof(char), len, len + ft_strlen((char *)c) + 1);
+	if (!(*input))
 		return (NULL);
-
-	unsigned char c;
-	ft_bzero(state.utf8_char, 4);
-	state.char_bytes = 0;
-	state.needed = 0;
-
-	while (read(STDIN_FILENO, &c, 1) > 0) {
-		if (c == '\n' || c == '\r')
-			break;
-
-		if (state.char_bytes == 0) {
-			state.utf8_char[0] = c;
-			state.needed = utf8_len(c); // 4
-			state.char_bytes = 1;
-			if (state.needed == 1)
-			{
-				buffer = (char *) ft_recalloc(buffer, sizeof(char), size, size + 2);
-				buffer[size++] = c;
-				state.char_bytes = 0;
-			}
-		}
-		else
-		{
-			state.utf8_char[state.char_bytes] = c;
-			state.char_bytes += 1;
-			if (state.char_bytes == state.needed)
-			{
-				buffer = (char *) ft_recalloc(buffer, sizeof(char), size, size + state.needed + 1);
-				unsigned int i = 0;
-				while (i < state.needed)
-				{
-					buffer[size] = state.utf8_char[i];
-					size += 1;
-					i += 1;
-				}
-				state.char_bytes = 0;
-			}
-		}
-	}
-	return buffer;
+	ft_memcpy(*input + len, c, ft_strlen((char *)c));
+	return (*input);
 }
 
-char	*build_string(unsigned int c)
-{
-	t_utf8_state	state;
-
-	(void) c;
-	ft_memset(state.utf8_char, '\0', 4);
-	state.char_bytes = 0;
-	state.needed = 0;
-	return (NULL);
-}
-
-
-
-char	*get_input(void)
+char	*get_input(t_minishell *ms)
 {
 	char			*input;
 	struct termios	original_mode;
-	//t_keycode		keycode;
 	t_uc			*c;
 
 	input = (char *) ft_calloc(sizeof(char), 1);
@@ -90,13 +37,18 @@ char	*get_input(void)
 	while (1)
 	{
 		set_raw_mode(&original_mode);
-		c = get_utf8_char_from_input();
+		c = get_utf8_char_from_stdin();
 		restore_mode(&original_mode);
-		ft_putstr_fd("*~~~", STDOUT_FILENO);
-		ft_putstr_fd((char *)c, STDOUT_FILENO);
-		ft_putstr_fd("~~~*\n", STDOUT_FILENO);
+		if (!c || !append_char_to_input(&input, c))
+			return (NULL);
+		ms->current_keycode = fetch_keycode(c[0]);
+		if (ms->current_keycode == KEY_NORMAL)
+			ft_putstr_fd((char *) c, STDIN_FILENO);
 		free(c);
-		break ;
+		if (ms->current_keycode == KEY_ENTER
+			|| ms->current_keycode == KEY_CTRL_C
+			|| ms->current_keycode == KEY_CTRL_D)
+			break ;
 	}
 	return (input);
 }

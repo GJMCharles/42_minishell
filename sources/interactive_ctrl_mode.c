@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   termios.c                                          :+:      :+:    :+:   */
+/*   interactive_ctrl_mode.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 21:59:33 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/24 21:59:49 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/25 20:54:58 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/25 20:55:09 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	restore_mode(struct termios *original)
+void	enable_interactive_mode(t_minishell *ms)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, original);
-}
-
-void	set_raw_mode(struct termios *original)
-{
-	struct termios	raw;
-
-	tcgetattr(STDIN_FILENO, original);
-	raw = *original;
-	raw.c_lflag &= ~(ICANON | ECHO | ISIG);
-	raw.c_cc[VMIN] = 1;
-	raw.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+	if (ms->current_keycode == KEY_CTRL_D)
+	{
+		set_signal_received(1);
+	}
+	if (ms->current_keycode == KEY_ENTER
+		|| ms->current_keycode == KEY_CTRL_C
+		|| ms->current_keycode == KEY_CTRL_D)
+	{
+		ms->add_newline = true;
+	}
 }

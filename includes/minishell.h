@@ -31,6 +31,8 @@
 #  define BUFFER_SIZE 1024
 # endif
 
+# define ERROR_MS "failed to setup minishell"
+# define ERROR_AG "failed to execute minishel - no arguments required"
 # define ERROR_SS "failed to initiate 'sigaction'"
 # define ERROR_MA "failed to allocate memory"
 # define ERROR_RI "failed to read standard input"
@@ -86,7 +88,7 @@ typedef struct s_utf8_state
 	t_uc	utf8_char[4];
 	t_ui	char_bytes;
 	t_ui	needed;
-}	t_utf8_state;
+}	t_utf8_char;
 
 typedef struct s_history
 {
@@ -97,29 +99,46 @@ typedef struct s_history
 typedef struct s_minishell
 {
 	char			*current_working_dir;
-	char			**commands;
+	char			*current_command_line;
+	t_keycode		current_keycode;
+	bool			add_newline;
 }	t_minishell;
 
 /**
- * input_utf8.c
+ * cmd_pwd.c
  */
-t_ui				utf8_len(t_uc c);
+char				*set_command_pwd(char **command_line);
+
+/**
+ * interactive_ctrl_mode.c
+ */
+void				enable_interactive_mode(t_minishell *ms);
 
 /**
  * input_key.c
  */
-t_keycode			ctrl_to_keycode(unsigned char c);
+t_keycode			ctrl_to_keycode(t_uc c);
 t_keycode			arrow_to_keycode(void);
-void				fetch_keychar(unsigned char *ptr);
-//t_keycode			fetch_keychar(unsigned char *c);
+t_keycode			fetch_keycode(t_uc	c);
+
+/**
+  * input_utf8.c
+  */
+int					parse_utf8_char(t_uc c, t_uc **b, t_utf8_char *s, t_ui *l);
+t_ui				utf8_len(t_uc c);
+t_uc				*get_utf8_char_from_stdin(void);
 
 /**
  * input.c
  */
-void				assign_char_to_buffer(t_uc **buffer, t_utf8_state *state, t_ui *size);
-t_uc				*get_utf8_char_from_input(void);
-char*				read_utf8_line(void);
-char				*get_input(void);
+char				*append_char_to_input(char **input, t_uc *c);
+char				*get_input(t_minishell *ms);
+
+/**
+ * termios.c
+ */
+void				restore_mode(struct termios *original);
+void				set_raw_mode(struct termios *original);
 
 /**
  * signal.c
@@ -130,49 +149,9 @@ void				signal_handler(int sig);
 bool				setup_signal_handler(void);
 
 /**
- * termios.c
+ * minishell.c
  */
-void				restore_mode(struct termios *original);
-void				set_raw_mode(struct termios *original);
-
-//char	**get_command_lines(char *command_line);
-
-///**
-// * cmd_pwd.c
-// */
-//char	*set_command_pwd(char **command_line);
-
-///**
-// * history.c
-// */
-//void		print_history(t_history *list);
-//void		clear_history(t_history **list);
-//void		update_history(char *command_line);
-
-///**
-// * minishell.c
-// */
-//void		clear_minishell_data(t_minishell *data);
-//int			minishell(char *command_line, char *envp[]);
-
-///**
-// * input.c
-// */
-//e_keycode	read_key(void);
-//e_keycode	get_input(char **input);
-
-///**
-// * stdin_mode.c
-// */
-//void		set_raw_mode(struct termios *original);
-//void		restore_mode(struct termios *original);
-
-///**
-// * signal.c
-// */
-//void		set_signal_received(int sig);
-//int			get_signal_received(void);
-//void		signal_handler(int sig);
-//bool		setup_signal_handlers(void);
+bool				setup_minishell_requirements(t_minishell *ms);
+int					minishell(char *envp[]);
 
 #endif

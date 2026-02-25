@@ -12,22 +12,33 @@
 
 #include "minishell.h"
 
-//void	clear_minishell_data(t_minishell *data)
-//{
-//	if (data->current_working_dir)
-//		free(data->current_working_dir);
-//}
+bool	setup_minishell_requirements(t_minishell *ms)
+{
+	ms->add_newline = false;
+	ms->current_working_dir = NULL;
+	return (true);
+}
 
-//int	minishell(char *command_line, char *envp[])
-//{
-//	(void) command_line;
-//	t_minishell	data;
+int	minishell(char *envp[])
+{
+	t_minishell	ms;
 
-//	(void) data;
-//	(void) envp;
-//	if (!set_command_pwd(&data.current_working_dir))
-//		return (clear_minishell_data(&data), STDERR_FILENO);
-//	// ft_putstr_fd("Command `pwd`: ", STDOUT_FILENO);
-//	// ft_putstr_fd(data.current_working_dir, STDOUT_FILENO);
-//	return (0);
-//}
+	(void) envp;
+	if (!setup_minishell_requirements(&ms))
+		return (perror(ERROR_MS), false);
+	while (get_signal_received() == 0)
+	{
+		if (write(STDOUT_FILENO, "~$> ", 4) == -1)
+			return (perror(ERROR_WO), false);
+		ms.current_command_line = get_input(&ms);
+		enable_interactive_mode(&ms);
+		if (ms.add_newline)
+		{
+			if (write(STDOUT_FILENO, "\n", 1) == -1)
+				return (perror(ERROR_WO), false);
+			ms.add_newline = false;
+		}
+		free(ms.current_command_line);
+	}
+	return (true);
+}
