@@ -38,6 +38,8 @@ int	minishell(char *envp[])
 				return (perror(ERROR_WO), false);
 			ms.add_newline = false;
 		}
+		// exec_commands(ms.current_command_line);
+		// append_command_line_to_history(ms.current_command_line);
 		free(ms.current_command_line);
 	}
 	return (true);
