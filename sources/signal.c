@@ -14,16 +14,25 @@
 
 volatile sig_atomic_t g_signal_received = 0;
 
+/**
+ * void	set_signal_received(int sig);
+ */
 void	set_signal_received(int sig)
 {
 	g_signal_received = sig;
 }
 
+/**
+ * int	get_signal_received(void);
+ */
 int	get_signal_received(void)
 {
 	return (g_signal_received);
 }
 
+/**
+ * void	signal_handler(int sig);
+ */
 void	signal_handler(int sig)
 {
 	/**
@@ -32,10 +41,12 @@ void	signal_handler(int sig)
 	 * Otherwise, the executable closes unexpectidaly
 	 */
 	(void) sig;
-	// g_signal_received = sig;
 }
 
-bool	setup_signal_handlers(void)
+/**
+ * bool	setup_signal_handler(void);
+ */
+bool	setup_signal_handler(void)
 {
 	struct sigaction	sa;
 
@@ -44,6 +55,6 @@ bool	setup_signal_handlers(void)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (perror(ERROR_XS), false);
+		return (perror(ERROR_SS), false);
 	return (true);
 }

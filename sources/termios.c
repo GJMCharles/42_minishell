@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stdin_mode.c                                       :+:      :+:    :+:   */
+/*   termios.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 11:39:01 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/24 11:39:12 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/24 21:59:33 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/24 21:59:49 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void restore_mode(struct termios *original)
+{
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, original);
+}
 
 void set_raw_mode(struct termios *original)
 {
@@ -22,9 +27,4 @@ void set_raw_mode(struct termios *original)
 	raw.c_cc[VMIN] = 1;
 	raw.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
-
-void restore_mode(struct termios *original)
-{
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, original);
 }

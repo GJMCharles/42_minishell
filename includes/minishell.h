@@ -17,23 +17,27 @@
 #  define _GNU_SOURCE
 # endif
 
+# include "libft.h"
+# include <dirent.h>
+# include <fcntl.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <string.h>
 # include <termios.h>
-# include "libft.h"
+# include <wchar.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
 
-# define ERROR_SS "failed to initiate `sigaction`"
+# define ERROR_SS "failed to initiate 'sigaction'"
 # define ERROR_MA "failed to allocate memory"
 # define ERROR_RI "failed to read standard input"
 # define ERROR_WO "failed to write standard output"
 # define ERROR_XX "an unexpected error has occured"
-# define ERROR_X3 ""
 
+typedef unsigned int		t_ui;
 typedef unsigned char		t_uc;
 typedef unsigned long int	t_uli;
 
@@ -77,36 +81,59 @@ typedef enum e_keycode
 	KEY_UNKNOWN
 }	t_keycode;
 
+typedef struct s_utf8_state
+{
+	t_uc	utf8_char[4];
+	t_ui	char_bytes;
+	t_ui	needed;
+}	t_utf8_state;
+
 typedef struct s_history
 {
-	uli					id;
-	char				*line;
+	t_uli			id;
+	char			*line;
 }	t_history;
 
 typedef struct s_minishell
 {
-	char	*current_working_dir;
-	char	**commands;
+	char			*current_working_dir;
+	char			**commands;
 }	t_minishell;
+
+/**
+ * input_utf8.c
+ */
+t_ui				utf8_len(t_uc c);
+
+/**
+ * input_key.c
+ */
+t_keycode			ctrl_to_keycode(unsigned char c);
+t_keycode			arrow_to_keycode(void);
+void				fetch_keychar(unsigned char *ptr);
+//t_keycode			fetch_keychar(unsigned char *c);
 
 /**
  * input.c
  */
-char	*get_input(void);
+void				assign_char_to_buffer(t_uc **buffer, t_utf8_state *state, t_ui *size);
+t_uc				*get_utf8_char_from_input(void);
+char*				read_utf8_line(void);
+char				*get_input(void);
 
 /**
  * signal.c
  */
-void	set_signal_received(int sig);
-int		get_signal_received(void);
-void	signal_handler(int sig);
-bool	setup_signal_handler(void);
+void				set_signal_received(int sig);
+int					get_signal_received(void);
+void				signal_handler(int sig);
+bool				setup_signal_handler(void);
 
 /**
  * termios.c
  */
-void	restore_mode(struct termios *original);
-void	set_raw_mode(struct termios *original);
+void				restore_mode(struct termios *original);
+void				set_raw_mode(struct termios *original);
 
 //char	**get_command_lines(char *command_line);
 

@@ -15,17 +15,17 @@
 /**
  * Command PWD
  */
-char	*set_command_pwd(char **command_line)
-{
-	char	*data;
+//char	*set_command_pwd(char **command_line)
+//{
+//	char	*data;
 
-	data = (char *) ft_calloc(sizeof(char), BUFFER_SIZE);
-	if (!data)
-	{
-		perror(ERROR_X0);
-		return ((char *) NULL);
-	}
-	data = getcwd(data, (BUFFER_SIZE - 1));
-	*command_line = data;
-	return (data);
-}
+//	data = (char *) ft_calloc(sizeof(char), BUFFER_SIZE);
+//	if (!data)
+//	{
+//		perror(ERROR_X0);
+//		return ((char *) NULL);
+//	}
+//	data = getcwd(data, (BUFFER_SIZE - 1));
+//	*command_line = data;
+//	return (data);
+//}

@@ -54,12 +54,11 @@ LDLIBS := \
 SOURCES_MANDATORY := \
 	main.c \
 	signal.c \
-	input.c \
-	history.c \
-	command_line.c \
-	minishell.c \
-	cmd_pwd.c \
-	stdin_mode.c
+	termios.c \
+	input_utf8.c \
+	input_key.c \
+	input.c
+
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
