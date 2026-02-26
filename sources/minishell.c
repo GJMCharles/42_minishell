@@ -104,7 +104,7 @@ bool	display_prompt(t_minishell *ms)
 	(void) ms;
 	if (write(STDOUT_FILENO, "~$> ", 4) == -1)
 		return (errno = EIO, perror("Error"), false);
-	fetch_command_line(ms);
+	fetch_input(ms);
 	if (ms->newline)
 	{
 		if (write(STDOUT_FILENO, "\n", 1) == -1)

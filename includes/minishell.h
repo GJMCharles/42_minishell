@@ -69,7 +69,7 @@ typedef struct s_minishell
 /**
  * input.c
  */
-void	fetch_command_line(t_minishell *ms);
+void	fetch_input(t_minishell *ms);
 
 /**
  * termios.c

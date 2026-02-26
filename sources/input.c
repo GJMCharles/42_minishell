@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	fetch_command_line(t_minishell *ms)
+void	fetch_input(t_minishell *ms)
 {
 	char	*command_line;
 
