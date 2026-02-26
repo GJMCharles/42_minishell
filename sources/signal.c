@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/**
+ * Global variable 'g_signal_received' of type INTEGER
+ */
 volatile sig_atomic_t	g_signal_received = 0;
 
 /**
@@ -41,7 +44,7 @@ void	signal_handler(int sig)
 /**
  * bool	setup_signal_handler(void);
  */
-bool	setup_signal_handler(void)
+bool	setup_signal(void)
 {
 	struct sigaction	sa;
 

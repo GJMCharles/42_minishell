@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bchanteu <bchanteu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/28 15:02:08 by bchanteu          #+#    #+#             */
-/*   Updated: 2025/11/28 15:54:37 by bchanteu         ###   ########.fr       */
+/*   Created: 2026/02/26 11:59:22 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/26 11:59:25 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,152 +17,87 @@
 #  define _GNU_SOURCE
 # endif
 
-# ifndef DEBUG_MODE
-#  define DEBUG_MODE 0
+# ifndef DEBUG
+#  define DEBUG 0
 # endif
-
-# include "libft.h"
-# include <dirent.h>
-# include <fcntl.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <string.h>
-# include <termios.h>
-# include <wchar.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
 
-# define ERROR_MS "failed to setup minishell"
-# define ERROR_AG "failed to execute minishel - no arguments required"
-# define ERROR_SS "failed to initiate 'sigaction'"
-# define ERROR_MA "failed to allocate memory"
-# define ERROR_RI "failed to read standard input"
-# define ERROR_WO "failed to write standard output"
-# define ERROR_XX "an unexpected error has occured"
+//# define ERROR_AG "no arguments required"
+//# define ERROR_MA "failed to allocate memory"
+//# define ERROR_MS "failed to setup minishell"
+//# define ERROR_RI "failed to read standard input"
+//# define ERROR_SS "failed to initiate 'sigaction'"
+//# define ERROR_WO "failed to write standard output"
+//# define ERROR_XX "an unexpected error has occured"
+
+# include "libft.h"
+# include <stdbool.h>
+# include <signal.h>
+# include <stdio.h>
+# include <errno.h>
+# include <termios.h>
 
 typedef unsigned int		t_ui;
 typedef unsigned char		t_uc;
 typedef unsigned long int	t_uli;
 
-typedef enum e_keycode
+typedef struct s_debug
 {
-	KEY_NORMAL,
-	KEY_ENTER,
-	KEY_ESC,
-	KEY_TAB,
-	KEY_UP,
-	KEY_DOWN,
-	KEY_LEFT,
-	KEY_RIGHT,
-	KEY_CTRL_A,
-	KEY_CTRL_B,
-	KEY_CTRL_C,
-	KEY_CTRL_D,
-	KEY_CTRL_E,
-	KEY_CTRL_F,
-	KEY_CTRL_G,
-	KEY_CTRL_H,
-	KEY_CTRL_I,
-	KEY_CTRL_J,
-	KEY_CTRL_K,
-	KEY_CTRL_L,
-	KEY_CTRL_M,
-	KEY_CTRL_N,
-	KEY_CTRL_O,
-	KEY_CTRL_P,
-	KEY_CTRL_Q,
-	KEY_CTRL_R,
-	KEY_CTRL_S,
-	KEY_CTRL_T,
-	KEY_CTRL_U,
-	KEY_CTRL_V,
-	KEY_CTRL_W,
-	KEY_CTRL_X,
-	KEY_CTRL_Y,
-	KEY_CTRL_Z,
-	KEY_CTRL_BACKSLASH,
-	KEY_UNKNOWN
-}	t_keycode;
+	bool		enabled;
+}	t_debug;
 
-typedef struct s_utf8_state
+typedef struct s_key_info
 {
-	t_uc	utf8_char[4];
-	t_ui	char_bytes;
-	t_ui	needed;
-}	t_utf8_char;
-
-typedef struct s_history
-{
-	t_uli			id;
-	char			*line;
-}	t_history;
+	bool		is_special;
+	bool		is_ctrl;
+	bool		is_arrow;
+	bool		key_code;
+	t_uc		sequence[4];
+	const char*	name;
+}	t_key_info;
 
 typedef struct s_minishell
 {
-	char			*current_working_dir;
-	char			*current_command_line;
-	t_keycode		current_keycode;
-	bool			add_newline;
+	char		*command_line;
+	bool		newline;
+	t_debug		debug;
 }	t_minishell;
-
-/**
- * cmd_pwd.c
- */
-char				*set_command_pwd(char **command_line);
-
-/**
- * interactive_ctrl_mode.c
- */
-void				enable_interactive_mode(t_minishell *ms);
-
-/**
- * input_key.c
- */
-t_keycode			ctrl_to_keycode(t_uc c);
-t_keycode			arrow_to_keycode(void);
-t_keycode			fetch_keycode(t_uc *c);
-
-/**
-  * input_utf8.c
-  */
-int					parse_utf8_char(t_uc c, t_uc **b, t_utf8_char *s, t_ui *l);
-t_ui				utf8_len(t_uc c);
-t_uc				*get_utf8_char_from_stdin(void);
 
 /**
  * input.c
  */
-char				*append_char_to_input(char **input, t_uc *c);
-char				*get_input(t_minishell *ms);
+void	fetch_command_line(t_minishell *ms);
 
 /**
  * termios.c
  */
-void				restore_mode(struct termios *original);
-void				set_raw_mode(struct termios *original);
+void	restore_mode(struct termios *original);
+void	set_raw_mode(struct termios *original);
 
 /**
  * signal.c
  */
-void				set_signal_received(int sig);
-int					get_signal_received(void);
-void				signal_handler(int sig);
-bool				setup_signal_handler(void);
-
-/**
- * minishell.c
- */
-bool				setup_minishell_requirements(t_minishell *ms);
-int					minishell(char *envp[]);
+void	set_signal_received(int sig);
+int		get_signal_received(void);
+void	signal_handler(int sig);
+bool	setup_signal(void);
 
 /**
  * debug.c
  */
-void				display_debug_info(char *message);
-void				display_debug_error(char *message);
-void				verify_debug_mode_enabled(void);
+void	display_debug_error(char *message);
+void	display_debug_info(char *message);
+void	setup_debug(t_minishell *ms);
+
+/**
+ * minishell.c
+ */
+void	destroy_minishell(t_minishell *ms);
+bool	setup_minishell(t_minishell *ms);
+bool	display_prompt(t_minishell *ms);
+bool	minishell(char *envp[]);
 
 #endif

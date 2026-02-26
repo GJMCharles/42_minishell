@@ -52,15 +52,12 @@ LDLIBS := \
 -lft
 
 SOURCES_MANDATORY := \
-	debug.c \
 	main.c \
 	minishell.c \
+	debug.c \
 	signal.c \
 	termios.c \
-	input.c \
- 	input_utf8.c \
-	input_key.c \
-	interactive_ctrl_mode.c
+	input.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
@@ -73,7 +70,7 @@ DEPENDENCIES_MANDATORY :=
 
 OBJECTS_DIR := .objects
 
-DEBUG := -D DEBUG_MODE=1
+DEBUG := -D DEBUG=1
 
 $(OBJECTS_DIR):
 	mkdir -p $@

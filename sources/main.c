@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
+/**
+ * main.c
+ */
 int	main(int argc, char *argv[], char *envp[])
 {
 	(void) argv;
-	verify_debug_mode_enabled();
 	if (argc != 1)
-		return (perror(ERROR_AG), EXIT_FAILURE);
-	if (!setup_signal_handler())
-		return (perror(ERROR_SS), EXIT_FAILURE);
+		return (errno = E2BIG, perror("Error"), EXIT_FAILURE);
 	if (!minishell(envp))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
