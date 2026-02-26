@@ -17,11 +17,16 @@ void	enable_interactive_mode(t_minishell *ms)
 	if (ms->current_keycode == KEY_CTRL_D)
 	{
 		set_signal_received(1);
+		display_debug_info("#️⃣ Key pressed: KEY_CTRL_D");
 	}
 	if (ms->current_keycode == KEY_ENTER
 		|| ms->current_keycode == KEY_CTRL_C
 		|| ms->current_keycode == KEY_CTRL_D)
 	{
+		if (ms->current_keycode == KEY_CTRL_C)
+			display_debug_info("#️⃣ Key pressed: KEY_CTRL_C");
 		ms->add_newline = true;
 	}
+	if (ms->current_keycode == KEY_CTRL_BACKSLASH)
+		display_debug_info("#️⃣ Key pressed: KEY_CTRL_BACKSLASH");
 }

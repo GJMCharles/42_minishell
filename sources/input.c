@@ -41,7 +41,7 @@ char	*get_input(t_minishell *ms)
 		restore_mode(&original_mode);
 		if (!c || !append_char_to_input(&input, c))
 			return (NULL);
-		ms->current_keycode = fetch_keycode(c[0]);
+		ms->current_keycode = fetch_keycode(c);
 		if (ms->current_keycode == KEY_NORMAL)
 			ft_putstr_fd((char *) c, STDIN_FILENO);
 		free(c);

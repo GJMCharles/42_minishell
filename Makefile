@@ -52,6 +52,7 @@ LDLIBS := \
 -lft
 
 SOURCES_MANDATORY := \
+	debug.c \
 	main.c \
 	minishell.c \
 	signal.c \
@@ -72,11 +73,13 @@ DEPENDENCIES_MANDATORY :=
 
 OBJECTS_DIR := .objects
 
+DEBUG := -D DEBUG_MODE=1
+
 $(OBJECTS_DIR):
 	mkdir -p $@
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(DEBUG) -c $< -o $@
 
 $(NAME): $(OBJECTS_MANDATORY)
 	@$(MAKE) -C $(LIBFT) all

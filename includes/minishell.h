@@ -17,6 +17,10 @@
 #  define _GNU_SOURCE
 # endif
 
+# ifndef DEBUG_MODE
+#  define DEBUG_MODE 0
+# endif
+
 # include "libft.h"
 # include <dirent.h>
 # include <fcntl.h>
@@ -119,7 +123,7 @@ void				enable_interactive_mode(t_minishell *ms);
  */
 t_keycode			ctrl_to_keycode(t_uc c);
 t_keycode			arrow_to_keycode(void);
-t_keycode			fetch_keycode(t_uc	c);
+t_keycode			fetch_keycode(t_uc *c);
 
 /**
   * input_utf8.c
@@ -153,5 +157,12 @@ bool				setup_signal_handler(void);
  */
 bool				setup_minishell_requirements(t_minishell *ms);
 int					minishell(char *envp[]);
+
+/**
+ * debug.c
+ */
+void				display_debug_info(char *message);
+void				display_debug_error(char *message);
+void				verify_debug_mode_enabled(void);
 
 #endif
