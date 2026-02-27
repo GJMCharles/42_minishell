@@ -57,7 +57,9 @@ SOURCES_MANDATORY := \
 	debug.c \
 	signal.c \
 	termios.c \
-	input.c
+	input.c \
+	input_utf8.c \
+	input_keycode.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \

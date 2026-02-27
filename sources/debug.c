@@ -31,14 +31,13 @@ void	display_debug_info(char *message)
 }
 
 /**
- * void	setup_debug(void);
+ * void	setup_debug(t_minishell *ms);
  */
 void	setup_debug(t_minishell *ms)
 {
-	ms->debug.enabled = false;
-	if (DEBUG == 1)
+	ms->debug.enabled = DEBUG;
+	if (ms->debug.enabled)
 	{
-		ms->debug.enabled = true;
 		ft_putendl_fd("⛔🐛 [[ DEBUG_MODE enabled ]]", STDOUT_FILENO);
 	}
 }
