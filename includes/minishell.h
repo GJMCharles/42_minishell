@@ -146,6 +146,7 @@ t_uc		*get_utf8_char(void);
  * input.c
  */
 void		clear_input(t_input *input);
+bool		can_exit_input(t_keycode keycode);
 void		fetch_input(t_minishell *ms);
 
 /**
