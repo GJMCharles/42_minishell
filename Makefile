@@ -59,7 +59,11 @@ SOURCES_MANDATORY := \
 	termios.c \
 	input.c \
 	input_utf8.c \
-	input_keycode.c
+	input_keycode.c \
+	env_utils.c \
+	builtins_env.c \
+	cmd_cd.c \
+	cmd_unset.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \

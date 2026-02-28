@@ -6,7 +6,7 @@
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 11:59:22 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/26 11:59:25 by grcharle         ###   ########.fr       */
+/*   Updated: 2026/02/28 00:00:00 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,6 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
-
-//# define ERROR_AG "no arguments required"
-//# define ERROR_MA "failed to allocate memory"
-//# define ERROR_MS "failed to setup minishell"
-//# define ERROR_RI "failed to read standard input"
-//# define ERROR_SS "failed to initiate 'sigaction'"
-//# define ERROR_WO "failed to write standard output"
-//# define ERROR_XX "an unexpected error has occured"
 
 # include "libft.h"
 # include <stdbool.h>
@@ -88,13 +80,17 @@ typedef enum e_keycode {
 	FOREACH_KEYCODE(GENERATE_ENUM)
 }	t_keycode;
 
-//static const char *KEYCODE_STRING[] = {
-//	FOREACH_KEYCODE(GENERATE_STRING)
-//};
-
 typedef unsigned int		t_ui;
 typedef unsigned char		t_uc;
 typedef unsigned long int	t_uli;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	bool			exported;
+	struct s_env	*next;
+}	t_env;
 
 typedef struct s_input
 {
@@ -125,57 +121,90 @@ typedef struct s_minishell
 	char		*command_line;
 	t_input		input;
 	t_debug		debug;
+	t_env		*env;
 }	t_minishell;
 
-/**
- * input_keycode.c
- */
+/*
+** input_keycode.c
+*/
 void		ctrl_to_keycode(t_input *input, t_uc *c);
 void		append_to_keycode(t_input *input, t_uc *c, t_keycode keycode);
 void		arrow_to_keycode(t_input *input, t_uc *c);
 void		get_keycode(t_uc *c, t_input *input);
 
-/**
- * input_utf8.c
- */
+/*
+** input_utf8.c
+*/
 int			parse_utf8_char(t_uc c, t_uc **buffer, t_utf8_char *state);
 t_ui		utf8_len(t_uc c);
 t_uc		*get_utf8_char(void);
 
-/**
- * input.c
- */
+/*
+** input.c
+*/
 void		clear_input(t_input *input);
 bool		can_exit_input(t_keycode keycode);
 void		fetch_input(t_minishell *ms);
 
-/**
- * termios.c
- */
+/*
+** termios.c
+*/
 void		restore_mode(struct termios *original);
 void		set_raw_mode(struct termios *original);
 
-/**
- * signal.c
- */
+/*
+** signal.c
+*/
 void		set_signal_received(int sig);
 int			get_signal_received(void);
 void		signal_handler(int sig);
 bool		setup_signal(void);
 
-/**
- * debug.c
- */
+/*
+** debug.c
+*/
 void		display_debug_error(char *message);
 void		display_debug_info(char *message);
 void		setup_debug(t_minishell *ms);
 
-/**
- * minishell.c
- */
+/*
+** minishell.c
+*/
+void		clear_env(t_env **env);
 void		destroy_minishell(t_minishell *ms);
-bool		setup_minishell(t_minishell *ms);
+bool		setup_minishell(t_minishell *ms, char *envp[]);
 bool		custom_prompt(t_minishell *ms);
 bool		minishell(char *envp[]);
+
+/*
+** env_utils.c
+*/
+t_env		*env_new(const char *key, const char *value, bool exported);
+void		env_add_back(t_env **head, t_env *node);
+int			env_from_envp(t_env **dst, char *envp[]);
+t_env		*env_find(t_env *env, const char *key);
+void		env_unset(t_env **env, const char *key);
+
+/*
+** builtins_env.c
+*/
+int			bi_env(t_env *env);
+int			bi_export_print(t_env *env);
+
+/*
+** cmd_unset.c
+*/
+bool		is_valid_identifier(const char *s);
+int			bi_unset(t_env **env, char **argv);
+
+/*
+** cmd_cd.c
+*/
+int			change_directory(t_minishell *shell, char **args);
+
+/*
+** bi_export (a implementer)
+*/
+int			bi_export(t_env **env, char **argv);
 
 #endif
