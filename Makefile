@@ -31,11 +31,12 @@ RM_DIR := rmdir -v
 
 NAME := minishell
 
+MODULES := ./modules
 LIBRARY := ./includes
 SOURCES := ./sources
 
 # Project Libft (+GetNextLine/+FtPrintF)
-LIBFT := $(addprefix $(LIBRARY)/, libft)
+LIBFT := $(addprefix $(MODULES)/, libft)
 
 CPPFLAGS := \
 -I $(LIBRARY) \
@@ -53,13 +54,7 @@ LDLIBS := \
 
 SOURCES_MANDATORY := \
 	main.c \
-	minishell.c \
-	signal.c \
-	termios.c \
-	input.c \
- 	input_utf8.c \
-	input_key.c \
-	interactive_ctrl_mode.c
+	minishell.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
@@ -97,8 +92,14 @@ fclean: clean
 
 re: fclean all
 
+# --suppressions=readline.supp
 debug: re
-	-valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --suppressions=readline.supp -s ./$(NAME)
+	-valgrind \
+		--leak-check=full \
+		--show-leak-kinds=all \
+		--track-fds=yes \
+		--trace-children=yes \
+		-s ./$(NAME)
 
 norm:
 	-norminette -R $(shell find ./includes -type f -name "*.h")
