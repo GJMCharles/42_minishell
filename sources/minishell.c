@@ -12,7 +12,36 @@
 
 #include "minishell.h"
 
-void	minishell(void)
+bool	minishell(void)
 {
-	//
+	struct termios	mode;
+	char			*prompt;
+	char			*command_line;
+
+	if (!init_signals())
+		return (perror("Error"), false);
+	prompt = ft_strdup("~[ 💻 ] $> ");
+	if (!prompt)
+		return (perror("Error"), false);
+	set_raw_mode(&mode);
+	while (1)
+	{
+		command_line = get_command_line(prompt);
+		// PARSE LINE
+		if (command_line)
+		{
+			ft_putstr_fd(command_line, STDOUT_FILENO);
+			free(command_line);
+		}
+		// EXECUTE COMMAND
+		// EXECUTE SIGNAL
+		// IF NO COMMAND && SIGNAL
+		//  EXIT *(break)
+		// return (restore_mode(&mode), free(prompt), false);
+		break ;
+	}
+	restore_mode(&mode);
+	free(prompt);
+	ft_putendl_fd("\nexit", STDOUT_FILENO);
+	return (true);
 }

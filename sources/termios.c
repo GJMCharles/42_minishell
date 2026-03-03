@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   termios.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/02 20:09:49 by grcharle          #+#    #+#             */
-/*   Updated: 2026/03/02 20:10:04 by grcharle         ###   ########.fr       */
+/*   Created: 2026/02/24 21:59:33 by grcharle          #+#    #+#             */
+/*   Updated: 2026/02/24 21:59:49 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char **envp)
+void	restore_mode(struct termios *original)
 {
-	(void) argc;
-	(void) argv;
-	(void) envp;
-	// INIT_MINI_SHELL
-	// init ENV list
-	// INIT HISTORY
-	minishell();
-	// DESTROY HISTORY
-	// DESTROY ENV list
-	// DESTROY_MINI_HELL
-	return (EXIT_SUCCESS);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, original);
+}
+
+void	set_raw_mode(struct termios *original)
+{
+	struct termios	raw;
+
+	tcgetattr(STDIN_FILENO, original);
+	raw = *original;
+	raw.c_lflag &= ~(ICANON | ECHO | ISIG);
+	raw.c_cc[VMIN] = 1;
+	raw.c_cc[VTIME] = 0;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }

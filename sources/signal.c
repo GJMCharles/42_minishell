@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/02 20:09:49 by grcharle          #+#    #+#             */
-/*   Updated: 2026/03/02 20:10:04 by grcharle         ###   ########.fr       */
+/*   Created: 2026/03/02 21:54:28 by grcharle          #+#    #+#             */
+/*   Updated: 2026/03/02 21:54:38 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char **envp)
+volatile sig_atomic_t	g_exit_status = 0;
+
+void	set_exit_status(int sig)
 {
-	(void) argc;
-	(void) argv;
-	(void) envp;
-	// INIT_MINI_SHELL
-	// init ENV list
-	// INIT HISTORY
-	minishell();
-	// DESTROY HISTORY
-	// DESTROY ENV list
-	// DESTROY_MINI_HELL
-	return (EXIT_SUCCESS);
+	g_exit_status = sig;
+}
+
+int	get_exit_status(void)
+{
+	return (g_exit_status);
+}
+
+bool	init_signals()
+{
+	struct sigaction sa;
+
+	ft_memset(&sa, 0, sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_sigaction = NULL;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (false);
+	return (true);
 }

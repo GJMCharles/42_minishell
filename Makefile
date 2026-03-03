@@ -39,22 +39,26 @@ SOURCES := ./sources
 LIBFT := $(addprefix $(MODULES)/, libft)
 
 CPPFLAGS := \
--I $(LIBRARY) \
--I $(LIBFT)
+	-I $(LIBRARY) \
+	-I $(LIBFT)
 
 # Specifies options for the linker:
 # example: -L/usr/local/lib
 LDFLAGS := \
--L $(LIBFT)
+	-L $(LIBFT)
 
 # Lists libraries to link with:
 # example: -lm -lpthread
 LDLIBS := \
--lft
+	-lft
 
 SOURCES_MANDATORY := \
 	main.c \
-	minishell.c
+	signal.c \
+	minishell.c \
+	command_line.c \
+	termios.c \
+	debug.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
@@ -97,12 +101,15 @@ debug: re
 	-valgrind \
 		--leak-check=full \
 		--show-leak-kinds=all \
+		--track-origins=yes \
 		--track-fds=yes \
 		--trace-children=yes \
 		-s ./$(NAME)
 
 norm:
 	-norminette -R $(shell find ./includes -type f -name "*.h")
+	-norminette -R $(shell find ./modules -type f -name "*.h")
+	-norminette -R $(shell find ./modules -type f -name "*.c")
 	-norminette -R $(shell find ./sources -type f -name "*.c")
 
 .PHONY: all clean fclean re

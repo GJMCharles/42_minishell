@@ -5,6 +5,7 @@
 			"column": 80
 		}
 	],
+	"C_Cpp.default.compilerPath": "/usr/bin/clang",
 	"workbench.colorCustomizations": {
 		"editorRuler.foreground": "#ff4081"
 	}
