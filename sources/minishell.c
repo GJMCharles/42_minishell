@@ -15,14 +15,12 @@
 bool	minishell(void)
 {
 	struct termios	mode;
-	char			*prompt;
+	char			prompt[14];
 	char			*command_line;
 
 	if (!init_signals())
 		return (perror("Error"), false);
-	prompt = ft_strdup("~[ 💻 ] $> ");
-	if (!prompt)
-		return (perror("Error"), false);
+	ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
 	set_raw_mode(&mode);
 	while (1)
 	{
@@ -41,7 +39,6 @@ bool	minishell(void)
 		break ;
 	}
 	restore_mode(&mode);
-	free(prompt);
 	ft_putendl_fd("\nexit", STDOUT_FILENO);
 	return (true);
 }

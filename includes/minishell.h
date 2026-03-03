@@ -51,7 +51,9 @@ typedef struct s_history
 
 typedef struct s_env
 {
-	t_ui	test;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
 }	t_env;
 
 typedef struct s_shell
