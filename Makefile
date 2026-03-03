@@ -71,11 +71,13 @@ DEPENDENCIES_MANDATORY :=
 
 OBJECTS_DIR := .objects
 
+DEBUG := -D DEBUG=1
+
 $(OBJECTS_DIR):
 	mkdir -p $@
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(DEBUG) -c $< -o $@
 
 $(NAME): $(OBJECTS_MANDATORY)
 	@$(MAKE) -C $(LIBFT) all
