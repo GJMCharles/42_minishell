@@ -71,11 +71,10 @@ char		*get_command_line(char *prompt);
  * debug.c
  */
 
-
 /**
  * minishell.c
  */
-bool		minishell(void);
+bool		minishell(t_env *shell);
 
 /**
  * signal.c

@@ -12,17 +12,29 @@
 
 #include "minishell.h"
 
+t_env	*init_env(char **envp)
+{
+	t_env	*env;
+
+	env = (t_env *) ft_calloc(sizeof(t_env), 1);
+	if (!env)
+		return (NULL);
+}
+
 int	main(int argc, char *argv[], char **envp)
 {
+	t_env		*env;
+	t_history	*history;
+	t_shell		*shell;
+
 	(void) argc;
 	(void) argv;
-	(void) envp;
-	// INIT_MINI_SHELL
-	// init ENV list
-	// INIT HISTORY
-	minishell();
-	// DESTROY HISTORY
-	// DESTROY ENV list
-	// DESTROY_MINI_HELL
+	env = init_env(envp);
+	history = init_history();
+	shell = init_shell(env, history);
+	minishell(shell);
+	destroy_history(&history);
+	destroy_env(&env);
+	destroy_shell(&shell);
 	return (EXIT_SUCCESS);
 }
