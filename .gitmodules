@@ -1,0 +1,4 @@
+[submodule "modules/libft"]
+	path = modules/libft
+	url = git@github.com:GJMCharles/42_libft.git
+	branch = master
