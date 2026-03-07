@@ -10,5 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "_token.h"
+#ifndef _TOKEN_H
+# define _TOKEN_H
 
+typedef enum e_type
+{
+	TYPE_WORD,
+	TYPE_IN,
+	TYPE_OUT,
+	TYPE_PIPE,
+	TYPE_APPEND,
+	TYPE_HEREDOC,
+	TYPE_EOF,
+}	t_type;
+
+typedef struct s_token
+{
+	enum e_type		type;
+	char			*value;
+}   t_token;
+
+#endif
