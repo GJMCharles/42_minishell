@@ -37,4 +37,4 @@ void		destroy_minishell(t_shell *minishell);
 int			execute_minishell(t_shell *minishell);
 int			setup_minishell(t_shell *minishell, char **envp);
 
-#endif
+#endif // MINISHELL_H

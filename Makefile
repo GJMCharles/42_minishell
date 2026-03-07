@@ -64,6 +64,8 @@ SOURCES_MANDATORY := \
 	main.c \
 	minishell.c \
 	signals.c \
+	command/command_list.c \
+	command/command_node.c \
 	env/env_list.c \
 	env/env_node.c \
 	token/token_extended.c \
@@ -84,6 +86,7 @@ OBJECTS_DIR := .objects
 DEBUG := -D DEBUG=1
 
 $(OBJECTS_DIR):
+	mkdir -p $@/command
 	mkdir -p $@/env
 	mkdir -p $@/token
 
@@ -103,12 +106,16 @@ clean:
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
 	@$(SLEEP)
-	@if [ -d  $(OBJECTS_DIR)/token ]; then \
-		$(RM_DIR) $(OBJECTS_DIR)/token; \
+	@if [ -d  $(OBJECTS_DIR)/command ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/command; \
 	fi
 	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR)/env ]; then \
 		$(RM_DIR) $(OBJECTS_DIR)/env; \
+	fi
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/token ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/token; \
 	fi
 	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR) ]; then \

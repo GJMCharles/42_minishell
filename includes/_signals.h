@@ -26,4 +26,4 @@ void		set_exit_status(int sig);
 int			get_exit_status(void);
 int			setup_signals(void);
 
-#endif
+#endif // _SIGNALS_H

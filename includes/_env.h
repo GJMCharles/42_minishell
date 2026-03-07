@@ -36,4 +36,4 @@ void		delete_node_env(t_env **list, t_env *node);
 void		append_node_env(t_env **list, t_env *node);
 t_env		*create_node_env(void);
 
-#endif
+#endif // _ENV_H

@@ -57,4 +57,4 @@ t_token		*tokenize(const char *input);
 void		append_node_token(t_token **list, t_token *node);
 t_token		*create_node_token(void);
 
-#endif
+#endif // _TOKEN_H
