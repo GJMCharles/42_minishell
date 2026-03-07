@@ -14,14 +14,14 @@
 
 int	main(int argc, char *argv[], char **envp)
 {
-	t_env	*env_list;
+	t_shell		minishell;
+	int			status;
 
 	(void) argc;
 	(void) argv;
-	env_list = setup_env_list(envp);
-	if (!env_list)
+	if (!setup_minishell(&minishell, envp))
 		return (EXIT_FAILURE);
-
-	destroy_env_list(&env_list);
-	return (EXIT_SUCCESS);
+	status = execute_minishell(&minishell);
+	destroy_minishell(&minishell);
+	return (status);
 }

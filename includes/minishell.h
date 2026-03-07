@@ -35,4 +35,13 @@ typedef unsigned long int	t_uli;
 typedef unsigned int		t_ui;
 typedef unsigned char		t_uc;
 
+typedef struct				s_shell
+{
+	t_env					*head_env;
+}	t_shell;
+
+void		destroy_minishell(t_shell *minishell);
+int			execute_minishell(t_shell *minishell);
+bool		setup_minishell(t_shell *minishell, char **envp);
+
 #endif
