@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "_signals.h"
 
 volatile sig_atomic_t	g_exit_status = 0;
 
@@ -24,7 +24,7 @@ int	get_exit_status(void)
 	return (g_exit_status);
 }
 
-bool	init_signals()
+int	setup_signals(void)
 {
 	struct sigaction sa;
 
@@ -33,6 +33,6 @@ bool	init_signals()
 	sa.sa_flags = 0;
 	sa.sa_sigaction = NULL;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (false);
-	return (true);
+		return (0);
+	return (1);
 }

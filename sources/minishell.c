@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 void	destroy_minishell(t_shell *minishell)
 {
 	destroy_env_list(&minishell->head_env);
@@ -20,37 +21,26 @@ void	destroy_minishell(t_shell *minishell)
 int	execute_minishell(t_shell *minishell)
 {
 	(void) minishell;
-	// char		prompt[14];
-	// char		*command_line;
+	char		prompt[14];
+	char		*command_line;
 
-	// ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
-	while (1)
+	ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
+	while (get_exit_status() == 0)
 	{
-		// command_line = get_command_line(prompt);
-		// PARSE LINE
-		// if (command_line)
-		// {
-			// ft_putstr_fd(command_line, STDOUT_FILENO);
-			// free(command_line);
-		// }
-		// EXECUTE COMMAND
-		// EXECUTE SIGNAL
-		// IF NO COMMAND && SIGNAL
-		//  EXIT *(break)
-		// return (restore_mode(&mode), free(prompt), false);
-		break ;
+		command_line = readline(prompt);
+		ft_putendl_fd(command_line, STDOUT_FILENO);
+		free(command_line);
 	}
 	return (EXIT_SUCCESS);
 }
 
-bool	setup_minishell(t_shell *minishell, char **envp)
+int	setup_minishell(t_shell *minishell, char **envp)
 {
 	t_env		*head_env;
-	t_shell		*minishell;
 
 	head_env = setup_env_list(envp);
 	if (!head_env)
-		return (false);
+		return (0);
 	minishell->head_env = head_env;
-	return (true);
+	return (1);
 }

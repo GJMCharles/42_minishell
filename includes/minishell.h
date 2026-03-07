@@ -23,13 +23,9 @@
 
 # include "libft.h"
 # include "_env.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <signal.h>
-
-extern volatile sig_atomic_t	g_exit_status;
+# include "_signals.h"
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef unsigned long int	t_uli;
 typedef unsigned int		t_ui;
@@ -42,6 +38,6 @@ typedef struct				s_shell
 
 void		destroy_minishell(t_shell *minishell);
 int			execute_minishell(t_shell *minishell);
-bool		setup_minishell(t_shell *minishell, char **envp);
+int			setup_minishell(t_shell *minishell, char **envp);
 
 #endif

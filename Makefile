@@ -55,6 +55,8 @@ LDLIBS := \
 
 SOURCES_MANDATORY := \
 	main.c \
+	minishell.c \
+	signals.c \
 	env/env_list.c \
 	env/env_node.c
 
@@ -107,6 +109,7 @@ debug: re
 		--track-origins=yes \
 		--track-fds=yes \
 		--trace-children=yes \
+		--suppressions=readline.supp \
 		-s ./$(NAME)
 
 norm:

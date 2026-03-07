@@ -1,7 +1,7 @@
 #include "_env.h"
 
 /**
- * 
+ * void	delete_node(t_env **list, t_env *node);
  */
 void	delete_node(t_env **list, t_env *node)
 {
@@ -24,7 +24,7 @@ void	delete_node(t_env **list, t_env *node)
 }
 
 /**
- * 
+ * void	append_node(t_env **list, t_env *node);
  */
 void	append_node(t_env **list, t_env *node)
 {
@@ -44,7 +44,7 @@ void	append_node(t_env **list, t_env *node)
 }
 
 /**
- * 
+ * t_env	*create_node(void);
  */
 t_env	*create_node(void)
 {
@@ -52,10 +52,7 @@ t_env	*create_node(void)
 
 	node = (t_env *) ft_calloc(sizeof(t_env), 1);
 	if (!node)
-	{
-		perror("failed to allocate 'struct s_env'");
-		return (NULL);
-	}
+		return (perror("failed to allocate 'struct s_env'"), NULL);
 	node->key = NULL;
 	node->value = NULL;
 	node->next = NULL;
