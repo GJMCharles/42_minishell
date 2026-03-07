@@ -16,6 +16,13 @@
 # Hide message 'Entering directory' & 'Leaving directory'
 MAKEFLAGS += --no-print-directory
 
+SLEEP_DURATION = 0.5
+ifeq ($(OS),Windows_NT)
+	SLEEP = timeout /t $(SLEEP_DURATION)
+else
+	SLEEP = sleep $(SLEEP_DURATION)
+endif
+
 CC := cc
 CFLAGS := \
 	-Wall -Wextra -Werror \
@@ -75,6 +82,7 @@ DEBUG := -D DEBUG=1
 
 $(OBJECTS_DIR):
 	mkdir -p $@/env
+	mkdir -p $@/token
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(DEBUG) -c $< -o $@
@@ -91,9 +99,15 @@ clean:
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
-	@if [ -d  $(OBJECTS_DIR)/env ]; then \
-		$(RM_DIR) -p $(OBJECTS_DIR)/env; \
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/token ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/token; \
 	fi
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/env ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/env; \
+	fi
+	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR) ]; then \
 		$(RM_DIR) -p $(OBJECTS_DIR); \
 	fi
