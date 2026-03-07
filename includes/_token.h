@@ -16,23 +16,17 @@
 # include "libft.h"
 # include <stdio.h>
 
-typedef enum e_operator
+typedef enum e_type
 {
-	OP_WORD,
-	OP_HEREDOC,
-	OP_IN,
-	OP_APPEND,
-	OP_OUT,
-	OP_TERNARY,
-	OP_PIPE,
-	OP_AND,
-	OP_BACKGROUND,
-	OP_EOF,
-}	t_operator;
+	TOKEN_WORD,
+	TOKEN_TEXT,
+	TOKEN_OPERATOR,
+	TOKEN_EOF,
+}	t_type;
 
 typedef struct s_token
 {
-	enum e_operator	type;
+	enum e_type		type;
 	char			*value;
 	struct s_token	*next;
 }	t_token;
@@ -40,7 +34,6 @@ typedef struct s_token
 /**
  * token_extended.c
  */
-t_operator	tokenize_get_operator(char *value);
 int			tokenize_operator(const char *input, int *i, t_token **token_list);
 int			tokenize_quotes(const char *input, int *i, t_token **token_list);
 int			tokenize_word(const char *input, int *i, t_token **token_list);
