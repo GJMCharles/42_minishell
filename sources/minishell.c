@@ -40,6 +40,7 @@ int	execute_minishell(t_shell *minishell)
 		ft_putendl_fd(line, STDOUT_FILENO);
 		destroy_token_list(&token_list);
 		free(line);
+		break ;
 	}
 	return (EXIT_SUCCESS);
 }
