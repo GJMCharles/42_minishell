@@ -19,7 +19,7 @@ The build-in commands are as followed:
 
 List of authorized functions from which the implemented ones are checkedboxed.
 
-- [ ] readline
+- [X] readline
 - [ ] rl_clear_history
 - [ ] rl_on_new_line
 - [ ] rl_replace_line
@@ -29,10 +29,10 @@ List of authorized functions from which the implemented ones are checkedboxed.
 - [X] malloc
 - [X] free
 - [X] write
-- [X] access
-- [X] open
-- [X] read
-- [X] close
+- [ ] access
+- [ ] open
+- [ ] read
+- [ ] close
 - [ ] fork
 - [ ] wait
 - [ ] waitpid
@@ -75,4 +75,28 @@ List of authorized functions from which the implemented ones are checkedboxed.
 
 ## Instructions
 
+After downloading the project from its remote repository
+```bash
+git clone <project-repository>
+```
+Fetch its submodule(s). In this case, the `libft` project.
+```bash
+git submodule init
+```
+Verify that all normes of coding conventions are respected.
+```bash
+norminette -R 2 .
+```
+Then compile the project in order to obtain its binary.
+```bash
+make
+```
+Repeat the process, in order to confirm that no re-link is initiated.
+```bash
+make
+```
+And now, finally execute the project using `valgrind`, in order to spy for any potential errors.
+```bash
+make debug
+```
 ## Resources

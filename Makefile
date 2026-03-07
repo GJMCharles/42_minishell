@@ -118,7 +118,6 @@ fclean: clean
 
 re: fclean all
 
-# --suppressions=readline.supp
 debug: re
 	-valgrind \
 		--leak-check=full \
