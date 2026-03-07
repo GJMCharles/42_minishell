@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <termios.h>
+#include <unistd.h>
 
 void	restore_mode(struct termios *original)
 {

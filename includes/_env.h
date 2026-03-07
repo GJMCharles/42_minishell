@@ -16,12 +16,12 @@
 # include "libft.h"
 # include <stdio.h>
 
-typedef struct		s_env
+typedef struct s_env
 {
 	char			*key;
 	char			*value;
 	struct s_env	*next;
-}   t_env;
+}	t_env;
 
 /**
  * env_list.c

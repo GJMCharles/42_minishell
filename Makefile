@@ -130,9 +130,9 @@ debug: re
 		-s ./$(NAME)
 
 norm:
-	-norminette -R $(shell find ./includes -type f -name "*.h")
-	-norminette -R $(shell find ./modules -type f -name "*.h")
-	-norminette -R $(shell find ./modules -type f -name "*.c")
-	-norminette -R $(shell find ./sources -type f -name "*.c")
+	-norminette -R --hfile $(shell find ./includes -type f -name "*.h")
+	-norminette -R --hfile $(shell find ./modules -type f -name "*.h")
+	-norminette -R --cfile $(shell find ./modules -type f -name "*.c")
+	-norminette -R --cfile $(shell find ./sources -type f -name "*.c")
 
 .PHONY: all clean fclean re

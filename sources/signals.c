@@ -26,7 +26,7 @@ int	get_exit_status(void)
 
 int	setup_signals(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	ft_memset(&sa, 0, sizeof(sa));
 	sigemptyset(&sa.sa_mask);
