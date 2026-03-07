@@ -19,11 +19,12 @@
 typedef enum e_type
 {
 	TYPE_WORD,
-	TYPE_IN,
-	TYPE_OUT,
-	TYPE_PIPE,
-	TYPE_APPEND,
 	TYPE_HEREDOC,
+	TYPE_IN,
+	TYPE_APPEND,
+	TYPE_OUT,
+	TYPE_TERNARY,
+	TYPE_PIPE,
 	TYPE_EOF,
 }	t_type;
 
@@ -35,13 +36,23 @@ typedef struct s_token
 }   t_token;
 
 /**
- * 
+ * token_extended.c
  */
-void		destroy_token_list(t_token **list);
+t_type		tokenize_get_operator(char *value);
+int			tokenize_operator(const char *input, int *i, t_token **token_list);
+int			tokenize_quotes(const char *input, int *i, t_token **token_list);
+int			tokenize_word(const char *input, int *i, t_token **token_list);
 
 /**
- * 
+ * token_list.c
  */
+void		destroy_token_list(t_token **list);
 t_token		*tokenize(const char *input);
+
+/**
+ * token_node.c
+ */
+void		append_node_token(t_token **list, t_token *node);
+t_token		*create_node_token(void);
 
 #endif

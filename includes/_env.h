@@ -32,7 +32,8 @@ t_env		*setup_env_list(char **envp);
 /**
  * env_node.c
  */
-void		delete_node(t_env **list, t_env *node);
-void		append_node(t_env **list, t_env *node);
+void		delete_node_env(t_env **list, t_env *node);
+void		append_node_env(t_env **list, t_env *node);
+t_env		*create_node_env(void);
 
 #endif

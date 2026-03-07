@@ -12,10 +12,8 @@
 
 #include "_env.h"
 
-t_env		*create_node(void);
-
 /**
- * 
+ * void	destroy_env_list(t_env **list);
  */
 void	destroy_env_list(t_env **list)
 {
@@ -37,7 +35,7 @@ void	destroy_env_list(t_env **list)
 }
 
 /**
- * 
+ * t_env	*setup_env_list(char **envp);
  */
 t_env	*setup_env_list(char **envp)
 {
@@ -53,12 +51,12 @@ t_env	*setup_env_list(char **envp)
 		match = ft_strchr(envp[i], '=');
 		if (!match)
 			continue ;
-		current = create_node();
+		current = create_node_env();
 		if (!current)
 			return (destroy_env_list(&env_list), NULL);
 		current->key = ft_substr(envp[i], 0, match - envp[i]);
 		current->value = ft_strdup(match + 1);
-		append_node(&env_list, current);
+		append_node_env(&env_list, current);
 		i += 1;
 	}
 	return (env_list);

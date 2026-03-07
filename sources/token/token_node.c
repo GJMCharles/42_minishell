@@ -12,7 +12,10 @@
 
 #include "_token.h"
 
-void	append_node(t_token **list, t_token *node)
+/**
+ * void	append_node_token(t_token **list, t_token *node)
+ */
+void	append_node_token(t_token **list, t_token *node)
 {
 	t_token	*tmp;
 
@@ -30,9 +33,9 @@ void	append_node(t_token **list, t_token *node)
 }
 
 /**
- * t_token	*create_node(void);
+ * t_token	*create_node_token(void);
  */
-t_token	*create_node(void)
+t_token	*create_node_token(void)
 {
 	t_token	*node;
 

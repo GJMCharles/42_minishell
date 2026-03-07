@@ -16,7 +16,7 @@
 # Hide message 'Entering directory' & 'Leaving directory'
 MAKEFLAGS += --no-print-directory
 
-SLEEP_DURATION = 0.5
+SLEEP_DURATION = 0.2
 ifeq ($(OS),Windows_NT)
 	SLEEP = timeout /t $(SLEEP_DURATION)
 else
@@ -66,6 +66,7 @@ SOURCES_MANDATORY := \
 	signals.c \
 	env/env_list.c \
 	env/env_node.c \
+	token/token_extended.c \
 	token/token_list.c \
 	token/token_node.c
 
