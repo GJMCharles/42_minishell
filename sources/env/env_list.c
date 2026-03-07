@@ -12,6 +12,8 @@
 
 #include "_env.h"
 
+t_env		*create_node(void);
+
 /**
  * 
  */

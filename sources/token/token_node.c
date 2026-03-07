@@ -12,31 +12,37 @@
 
 #include "_token.h"
 
-t_token	*tokenize(const char *input)
+void	append_node(t_token **list, t_token *node)
 {
-	int				i;
-	unsigned char	c;
-	t_token			*token_list;
-	t_token			*current;
+	t_token	*tmp;
 
-	i = 0;
-	token_list = NULL;
-	while (input[i])
+	if (!node)
+		return ;
+	if (!*list)
 	{
-		c = (unsigned int) input[i];
-		if (ft_isspace(c))
-		{
-			i += 1;
-			continue ;
-		}
-		else if (c == '<' || c == ';' || c == '|' || c == '&' || c == '>')
-			tokenize_operator(input, &i, &token_list);
-		else if (c == '"' || c == '\'')
-			tokenize_quotes(input, &i, &token_list);
-		else
-			tokenize_words(input, &i, &token_list);
+		*list = node;
+		return ;
 	}
-	return (token_list);
+	tmp = *list;
+	while (tmp && tmp->next)
+		tmp = tmp->next;
+	tmp->next = node;
+}
+
+/**
+ * t_token	*create_node(void);
+ */
+t_token	*create_node(void)
+{
+	t_token	*node;
+
+	node = (t_token *) ft_calloc(sizeof(t_token), 1);
+	if (!node)
+		return (perror("failed to allocate 'struct s_token'"), NULL);
+	node->type = TYPE_EOF;
+	node->value = NULL;
+	node->next = NULL;
+	return (node);
 }
 
 // char	*tokenize_word(const char *start, char *ptr)
@@ -104,9 +110,7 @@ t_token	*tokenize(const char *input)
 // 	ptr = *input;
 // 	token->type = TOKEN_OPERATOR;
 // 	token->value = ft_strdup(str);
-// 	if ((c == '|' && *(ptr + 1) == '|')
-// 		|| (c == '&' && *(ptr + 1) == '&')
-// 		|| (c == '>' && *(ptr + 1) == '>'))
+// 	if ()
 // 	{
 // 		token->value = ft_recalloc(token->value, sizeof(char), 1, 3);
 // 		ft_memcpy(token->value + 1, str, 1);

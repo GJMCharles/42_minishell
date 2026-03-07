@@ -14,6 +14,7 @@
 # define _TOKEN_H
 
 # include "libft.h"
+#include <stdio.h>
 
 typedef enum e_type
 {
@@ -30,6 +31,17 @@ typedef struct s_token
 {
 	enum e_type		type;
 	char			*value;
+	struct s_token	*next;
 }   t_token;
+
+/**
+ * 
+ */
+void		destroy_token_list(t_token **list);
+
+/**
+ * 
+ */
+t_token		*tokenize(const char *input);
 
 #endif

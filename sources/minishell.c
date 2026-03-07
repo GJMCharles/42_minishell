@@ -22,14 +22,17 @@ int	execute_minishell(t_shell *minishell)
 {
 	(void) minishell;
 	char		prompt[14];
-	char		*command_line;
+	char		*line;
+	t_token		*token_list;
 
 	ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
 	while (get_exit_status() == 0)
 	{
-		command_line = readline(prompt);
-		ft_putendl_fd(command_line, STDOUT_FILENO);
-		free(command_line);
+		line = readline(prompt);
+		token_list = tokenize(line);
+		ft_putendl_fd(line, STDOUT_FILENO);
+		destroy_token_list(&token_list);
+		free(line);
 	}
 	return (EXIT_SUCCESS);
 }

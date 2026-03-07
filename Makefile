@@ -65,7 +65,9 @@ SOURCES_MANDATORY := \
 	minishell.c \
 	signals.c \
 	env/env_list.c \
-	env/env_node.c
+	env/env_node.c \
+	token/token_list.c \
+	token/token_node.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
