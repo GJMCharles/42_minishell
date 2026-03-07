@@ -13,6 +13,8 @@
 #ifndef _TOKEN_H
 # define _TOKEN_H
 
+# include "libft.h"
+
 typedef enum e_type
 {
 	TYPE_WORD,
