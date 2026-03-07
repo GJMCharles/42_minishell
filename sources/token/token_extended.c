@@ -12,23 +12,33 @@
 
 #include "_token.h"
 
-t_type	tokenize_get_operator(char *value)
+/**
+ * t_operator	tokenize_get_operator(char *value);
+ */
+t_operator	tokenize_get_operator(char *value)
 {
 	if (ft_strncmp(value, "<<", 2) == 0)
-		return (TYPE_HEREDOC);
+		return (OP_HEREDOC);
 	else if (ft_strncmp(value, "<", 1) == 0)
-		return (TYPE_IN);
+		return (OP_IN);
 	else if (ft_strncmp(value, ">>", 2) == 0)
-		return (TYPE_APPEND);
+		return (OP_APPEND);
 	else if (ft_strncmp(value, ">", 1) == 0)
-		return (TYPE_OUT);
+		return (OP_OUT);
 	else if (ft_strncmp(value, "||", 2) == 0)
-		return (TYPE_TERNARY);
+		return (OP_TERNARY);
 	else if (ft_strncmp(value, "|", 1) == 0)
-		return (TYPE_PIPE);
-	return (TYPE_EOF);
+		return (OP_PIPE);
+	else if (ft_strncmp(value, "&&", 2) == 0)
+		return (OP_AND);
+	else if (ft_strncmp(value, "&", 1) == 0)
+		return (OP_BACKGROUND);
+	return (OP_EOF);
 }
 
+/**
+ * int	tokenize_operator(const char *input, int *i, t_token **token_list);
+ */
 int	tokenize_operator(const char *input, int *i, t_token **token_list)
 {
 	t_token			*current;
@@ -39,9 +49,10 @@ int	tokenize_operator(const char *input, int *i, t_token **token_list)
 		destroy_token_list(token_list);
 		return (-1);
 	}
-	if ((input[0] == '|' && input[1] == '|')
-		|| (input[0] == '&' && input[1] == '&')
-		|| (input[0] == '>' && input[1] == '>'))
+	if ((input[0] == '<' && input[1] == '<')
+		|| (input[0] == '>' && input[1] == '>')
+		|| (input[0] == '|' && input[1] == '|')
+		|| (input[0] == '&' && input[1] == '&'))
 	{
 		current->value = (char *) ft_calloc(sizeof(char), 3);
 		ft_memcpy(current->value, input, 2);
@@ -58,6 +69,9 @@ int	tokenize_operator(const char *input, int *i, t_token **token_list)
 	return (0);
 }
 
+/**
+ * int	tokenize_quotes(const char *input, int *i, t_token **token_list);
+ */
 int	tokenize_quotes(const char *input, int *i, t_token **token_list)
 {
 	int				pos;
@@ -76,13 +90,16 @@ int	tokenize_quotes(const char *input, int *i, t_token **token_list)
 	if (input[pos + 1] == '\0')
 		return (free(current), destroy_token_list(token_list), -1);
 	value = ft_substr(input, 1, pos);
-	current->type = TYPE_WORD;
+	current->type = OP_WORD;
 	current->value = value;
 	append_node_token(token_list, current);
 	*i += (pos + 2);
 	return (0);
 }
 
+/**
+ * int	tokenize_word(const char *input, int *i, t_token **token_list);
+ */
 int	tokenize_word(const char *input, int *i, t_token **token_list)
 {
 	int				pos;
@@ -96,13 +113,13 @@ int	tokenize_word(const char *input, int *i, t_token **token_list)
 		return (-1);
 	}
 	pos = 0;
-	while (input[pos] && !ft_isspace(input[pos]))
+	while (input[pos] && input[pos] != 32)
 		pos += 1;
 	if (input[pos] == '\0')
 		value = ft_substr(input, 0, pos - 1);
 	else
 		value = ft_substr(input, 0, pos);
-	current->type = TYPE_WORD;
+	current->type = OP_WORD;
 	current->value = value;
 	append_node_token(token_list, current);
 	*i += pos;

@@ -13,6 +13,10 @@
 #ifndef _SIGNALS_H
 # define _SIGNALS_H
 
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
+
 # include "libft.h"
 # include <signal.h>
 

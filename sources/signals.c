@@ -14,16 +14,25 @@
 
 volatile sig_atomic_t	g_exit_status = 0;
 
+/**
+ * void	set_exit_status(int sig);
+ */
 void	set_exit_status(int sig)
 {
 	g_exit_status = sig;
 }
 
+/**
+ * int	get_exit_status(void);
+ */
 int	get_exit_status(void)
 {
 	return (g_exit_status);
 }
 
+/**
+ * int	setup_signals(void);
+ */
 int	setup_signals(void)
 {
 	struct sigaction	sa;

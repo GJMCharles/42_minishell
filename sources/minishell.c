@@ -12,18 +12,25 @@
 
 #include "minishell.h"
 
+/**
+ * void	destroy_minishell(t_shell *minishell);
+ */
 void	destroy_minishell(t_shell *minishell)
 {
 	destroy_env_list(&minishell->head_env);
 	ft_putendl_fd("\nexit", STDOUT_FILENO);
 }
 
+/**
+ * int	execute_minishell(t_shell *minishell);
+ */
 int	execute_minishell(t_shell *minishell)
 {
 	char		prompt[14];
 	char		*line;
 	t_token		*token_list;
 
+	(void) minishell;
 	ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
 	while (get_exit_status() == 0)
 	{
@@ -33,11 +40,13 @@ int	execute_minishell(t_shell *minishell)
 		ft_putendl_fd(line, STDOUT_FILENO);
 		destroy_token_list(&token_list);
 		free(line);
-		break ;
 	}
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * int	setup_minishell(t_shell *minishell, char **envp);
+ */
 int	setup_minishell(t_shell *minishell, char **envp)
 {
 	t_env		*head_env;

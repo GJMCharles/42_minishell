@@ -17,10 +17,6 @@
 #  define DEBUG false
 # endif
 
-# ifndef _GNU_SOURCE
-#  define _GNU_SOURCE
-# endif
-
 # include "libft.h"
 # include "_env.h"
 # include "_signals.h"
