@@ -50,15 +50,13 @@ LDFLAGS := \
 # Lists libraries to link with:
 # example: -lm -lpthread
 LDLIBS := \
-	-lft
+	-lft \
+	-lreadline
 
 SOURCES_MANDATORY := \
 	main.c \
-	signal.c \
-	minishell.c \
-	command_line.c \
-	termios.c \
-	debug.c
+	env/env_list.c \
+	env/env_node.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
@@ -74,7 +72,7 @@ OBJECTS_DIR := .objects
 DEBUG := -D DEBUG=1
 
 $(OBJECTS_DIR):
-	mkdir -p $@
+	mkdir -p $@/env
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(DEBUG) -c $< -o $@
@@ -91,6 +89,9 @@ clean:
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
+	@if [ -d  $(OBJECTS_DIR)/env ]; then \
+		$(RM_DIR) -p $(OBJECTS_DIR)/env; \
+	fi
 	@if [ -d  $(OBJECTS_DIR) ]; then \
 		$(RM_DIR) -p $(OBJECTS_DIR); \
 	fi
