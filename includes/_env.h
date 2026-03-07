@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_pwd.c                                          :+:      :+:    :+:   */
+/*   _env.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 13:43:21 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/23 14:28:53 by grcharle         ###   ########.fr       */
+/*   Created: 2026/03/07 14:02:42 by grcharle          #+#    #+#             */
+/*   Updated: 2026/03/07 14:02:46 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef _ENV_H
+# define _ENV_H
+
+# include "libft.h"
+# include <stdio.h>
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 /**
- * Command PWD
+ * env_list.c
  */
-char	*get_command_pwd(void)
-{
-	char	*data;
+void		destroy_env_list(t_env **list);
+t_env		*setup_env_list(char **envp);
 
-	data = (char *) ft_calloc(sizeof(char), BUFFER_SIZE);
-	if (!data)
-		return (perror(ERROR_MA), NULL);
-	data = getcwd(data, (BUFFER_SIZE - 1));
-	return (data);
-}
+/**
+ * env_node.c
+ */
+void		delete_node_env(t_env **list, t_env *node);
+void		append_node_env(t_env **list, t_env *node);
+t_env		*create_node_env(void);
+
+#endif

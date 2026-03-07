@@ -5,21 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 17:24:35 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/22 17:24:37 by grcharle         ###   ########.fr       */
+/*   Created: 2026/03/02 20:09:49 by grcharle          #+#    #+#             */
+/*   Updated: 2026/03/07 13:59:15 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+/**
+ * int	main(int argc, char *argv[], char **envp);
+ */
+int	main(int argc, char *argv[], char **envp)
 {
+	t_shell		minishell;
+	int			status;
+
+	(void) argc;
 	(void) argv;
-	if (argc != 1)
-		return (perror(ERROR_AG), EXIT_FAILURE);
-	if (!setup_signal_handler())
-		return (perror(ERROR_SS), EXIT_FAILURE);
-	if (!minishell(envp))
+	if (!setup_minishell(&minishell, envp))
 		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	status = execute_minishell(&minishell);
+	destroy_minishell(&minishell);
+	return (status);
 }

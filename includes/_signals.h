@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   _signals.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/30 12:01:15 by grcharle          #+#    #+#             */
-/*   Updated: 2025/08/26 14:30:44 by grcharle         ###   ########.fr       */
+/*   Created: 2026/03/07 14:02:52 by grcharle          #+#    #+#             */
+/*   Updated: 2026/03/07 14:02:53 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef _SIGNALS_H
+# define _SIGNALS_H
 
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*new_node;
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
 
-	new_node = (t_list *) malloc(sizeof(t_list));
-	if (!new_node)
-		return ((t_list *)(void *)0);
-	new_node->content = content;
-	new_node->next = (t_list *)(void *)0;
-	return (new_node);
-}
+# include "libft.h"
+# include <signal.h>
+
+extern volatile sig_atomic_t	g_exit_status;
+
+void		set_exit_status(int sig);
+int			get_exit_status(void);
+int			setup_signals(void);
+
+#endif

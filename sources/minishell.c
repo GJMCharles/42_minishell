@@ -5,40 +5,56 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 14:21:36 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/23 14:21:47 by grcharle         ###   ########.fr       */
+/*   Created: 2026/03/02 20:10:25 by grcharle          #+#    #+#             */
+/*   Updated: 2026/03/07 13:59:02 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	setup_minishell_requirements(t_minishell *ms)
+/**
+ * void	destroy_minishell(t_shell *minishell);
+ */
+void	destroy_minishell(t_shell *minishell)
 {
-	ms->add_newline = false;
-	ms->current_working_dir = NULL;
-	return (true);
+	destroy_env_list(&minishell->head_env);
+	ft_putendl_fd("\nexit", STDOUT_FILENO);
 }
 
-int	minishell(char *envp[])
+/**
+ * int	execute_minishell(t_shell *minishell);
+ */
+int	execute_minishell(t_shell *minishell)
 {
-	t_minishell	ms;
+	char		prompt[14];
+	char		*line;
+	t_token		*token_list;
 
-	(void) envp;
-	if (!setup_minishell_requirements(&ms))
-		return (perror(ERROR_MS), false);
-	while (get_signal_received() == 0)
+	(void) minishell;
+	ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
+	while (get_exit_status() == 0)
 	{
-		if (write(STDOUT_FILENO, "~$> ", 4) == -1)
-			return (perror(ERROR_WO), false);
-		ms.current_command_line = get_input(&ms);
-		enable_interactive_mode(&ms);
-		if (ms.add_newline)
-		{
-			if (write(STDOUT_FILENO, "\n", 1) == -1)
-				return (perror(ERROR_WO), false);
-			ms.add_newline = false;
-		}
-		free(ms.current_command_line);
+		//line = readline(prompt);
+		line = ft_strdup("echo -e \"TEST 1 2 3\" && ls -lah ;; pwd || echo \'Yes, I am here 😜\'");
+		token_list = tokenize(line);
+		ft_putendl_fd(line, STDOUT_FILENO);
+		destroy_token_list(&token_list);
+		free(line);
+		break ;
 	}
-	return (true);
+	return (EXIT_SUCCESS);
+}
+
+/**
+ * int	setup_minishell(t_shell *minishell, char **envp);
+ */
+int	setup_minishell(t_shell *minishell, char **envp)
+{
+	t_env		*head_env;
+
+	head_env = setup_env_list(envp);
+	if (!head_env)
+		return (0);
+	minishell->head_env = head_env;
+	return (1);
 }

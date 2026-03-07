@@ -16,6 +16,13 @@
 # Hide message 'Entering directory' & 'Leaving directory'
 MAKEFLAGS += --no-print-directory
 
+SLEEP_DURATION = 0.2
+ifeq ($(OS),Windows_NT)
+	SLEEP = timeout /t $(SLEEP_DURATION)
+else
+	SLEEP = sleep $(SLEEP_DURATION)
+endif
+
 CC := cc
 CFLAGS := \
 	-Wall -Wextra -Werror \
@@ -31,35 +38,37 @@ RM_DIR := rmdir -v
 
 NAME := minishell
 
+MODULES := ./modules
 LIBRARY := ./includes
 SOURCES := ./sources
 
 # Project Libft (+GetNextLine/+FtPrintF)
-LIBFT := $(addprefix $(LIBRARY)/, libft)
+LIBFT := $(addprefix $(MODULES)/, libft)
 
 CPPFLAGS := \
--I $(LIBRARY) \
--I $(LIBFT)
+	-I $(LIBRARY) \
+	-I $(LIBFT)
 
 # Specifies options for the linker:
 # example: -L/usr/local/lib
 LDFLAGS := \
--L $(LIBFT)
+	-L $(LIBFT)
 
 # Lists libraries to link with:
 # example: -lm -lpthread
 LDLIBS := \
--lft
+	-lft \
+	-lreadline
 
 SOURCES_MANDATORY := \
 	main.c \
 	minishell.c \
-	signal.c \
-	termios.c \
-	input.c \
- 	input_utf8.c \
-	input_key.c \
-	interactive_ctrl_mode.c
+	signals.c \
+	env/env_list.c \
+	env/env_node.c \
+	token/token_extended.c \
+	token/token_list.c \
+	token/token_node.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
@@ -72,11 +81,14 @@ DEPENDENCIES_MANDATORY :=
 
 OBJECTS_DIR := .objects
 
+DEBUG := -D DEBUG=1
+
 $(OBJECTS_DIR):
-	mkdir -p $@
+	mkdir -p $@/env
+	mkdir -p $@/token
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(DEBUG) -c $< -o $@
 
 $(NAME): $(OBJECTS_MANDATORY)
 	@$(MAKE) -C $(LIBFT) all
@@ -90,6 +102,15 @@ clean:
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/token ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/token; \
+	fi
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/env ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/env; \
+	fi
+	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR) ]; then \
 		$(RM_DIR) -p $(OBJECTS_DIR); \
 	fi
@@ -97,11 +118,21 @@ fclean: clean
 
 re: fclean all
 
+# --suppressions=readline.supp
 debug: re
-	-valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --suppressions=readline.supp -s ./$(NAME)
+	-valgrind \
+		--leak-check=full \
+		--show-leak-kinds=all \
+		--track-origins=yes \
+		--track-fds=yes \
+		--trace-children=yes \
+		--suppressions=readline.supp \
+		-s ./$(NAME)
 
 norm:
-	-norminette -R $(shell find ./includes -type f -name "*.h")
-	-norminette -R $(shell find ./sources -type f -name "*.c")
+	-norminette -R --hfile $(shell find ./includes -type f -name "*.h")
+	-norminette -R --hfile $(shell find ./modules -type f -name "*.h")
+	-norminette -R --cfile $(shell find ./modules -type f -name "*.c")
+	-norminette -R --cfile $(shell find ./sources -type f -name "*.c")
 
 .PHONY: all clean fclean re

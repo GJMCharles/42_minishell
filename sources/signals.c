@@ -1,55 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 21:16:59 by grcharle          #+#    #+#             */
-/*   Updated: 2026/02/23 21:17:18 by grcharle         ###   ########.fr       */
+/*   Created: 2026/03/02 21:54:28 by grcharle          #+#    #+#             */
+/*   Updated: 2026/03/07 13:58:51 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "_signals.h"
 
-volatile sig_atomic_t	g_signal_received = 0;
+volatile sig_atomic_t	g_exit_status = 0;
 
 /**
- * void	set_signal_received(int sig);
+ * void	set_exit_status(int sig);
  */
-void	set_signal_received(int sig)
+void	set_exit_status(int sig)
 {
-	g_signal_received = sig;
+	g_exit_status = sig;
 }
 
 /**
- * int	get_signal_received(void);
+ * int	get_exit_status(void);
  */
-int	get_signal_received(void)
+int	get_exit_status(void)
 {
-	return (g_signal_received);
+	return (g_exit_status);
 }
 
 /**
- * void	signal_handler(int sig);
+ * int	setup_signals(void);
  */
-void	signal_handler(int sig)
-{
-	(void) sig;
-}
-
-/**
- * bool	setup_signal_handler(void);
- */
-bool	setup_signal_handler(void)
+int	setup_signals(void)
 {
 	struct sigaction	sa;
 
 	ft_memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = signal_handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
+	sa.sa_sigaction = NULL;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (false);
-	return (true);
+		return (0);
+	return (1);
 }
