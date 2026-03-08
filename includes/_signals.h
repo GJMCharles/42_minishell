@@ -19,6 +19,7 @@
 
 # include "libft.h"
 # include <signal.h>
+# include <stdio.h>
 
 extern volatile sig_atomic_t	g_exit_status;
 

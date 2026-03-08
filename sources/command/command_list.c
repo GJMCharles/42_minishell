@@ -11,3 +11,8 @@
 /* ************************************************************************** */
 
 #include "_command.h"
+
+t_cmd_pipeline  *parse_token(t_token *tokens)
+{
+    t_cmd_pipeline  *pipeline;
+}

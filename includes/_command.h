@@ -13,19 +13,33 @@
 #ifndef _COMMAND_H
 # define _COMMAND_H
 
+# include "_token.h"
+
 typedef struct s_cmd
 {
-	//
-	struct s_cmd	*next;
+	char			**args;
+	char			*infile;
+	char			*outfile;
+	char			*heredoc_delimiter;
+	int				append_mode;
+	int				background;
+	int				argc;
 }	t_cmd;
 
-void			handle_heredoc(void);
-void			handle_infile(void);
-void			handle_append(void);
-void			handle_outfile(void);
-void			handle_ternary(void);
-void			handle_pipe(void);
-void			handle_and(void);
-void			handle_background(void);
+typedef struct s_cmd_pipeline
+{
+	struct s_cmd	**commands;
+	int				nb_commands;
+	int				*operators;
+}	t_cmd_pipeline;
+
+void				handle_heredoc(void);
+void				handle_infile(void);
+void				handle_append(void);
+void				handle_outfile(void);
+void				handle_ternary(void);
+void				handle_pipe(void);
+void				handle_and(void);
+void				handle_background(void);
 
 #endif // _COMMAND_H

@@ -42,6 +42,6 @@ int	setup_signals(void)
 	sa.sa_flags = 0;
 	sa.sa_sigaction = NULL;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (0);
+		return (perror("failed to initiate signal"), 0);
 	return (1);
 }
