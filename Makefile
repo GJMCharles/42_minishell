@@ -68,6 +68,7 @@ SOURCES_MANDATORY := \
 	command/command_node.c \
 	env/env_list.c \
 	env/env_node.c \
+	exec/cmd_cd.c \
 	token/token_extended.c \
 	token/token_list.c \
 	token/token_node.c
@@ -88,6 +89,7 @@ DEBUG := -D DEBUG=1
 $(OBJECTS_DIR):
 	mkdir -p $@/command
 	mkdir -p $@/env
+	mkdir -p $@/exec
 	mkdir -p $@/token
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
@@ -112,6 +114,10 @@ fclean: clean
 	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR)/env ]; then \
 		$(RM_DIR) $(OBJECTS_DIR)/env; \
+	fi
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/exec ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/exec; \
 	fi
 	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR)/token ]; then \
