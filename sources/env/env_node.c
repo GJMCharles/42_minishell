@@ -70,3 +70,28 @@ t_env	*create_node_env(void)
 	node->next = NULL;
 	return (node);
 }
+
+///
+// /**
+//  * t_type	tokenize_get_operator(char *value);
+//  */
+// t_type	tokenize_get_operator(char *value)
+// {
+// 	if (ft_strncmp(value, "<<", 2) == 0)
+// 		return (OP_HEREDOC);
+// 	else if (ft_strncmp(value, "<", 1) == 0)
+// 		return (OP_IN);
+// 	else if (ft_strncmp(value, ">>", 2) == 0)
+// 		return (OP_APPEND);
+// 	else if (ft_strncmp(value, ">", 1) == 0)
+// 		return (OP_OUT);
+// 	else if (ft_strncmp(value, "||", 2) == 0)
+// 		return (OP_TERNARY);
+// 	else if (ft_strncmp(value, "|", 1) == 0)
+// 		return (OP_PIPE);
+// 	else if (ft_strncmp(value, "&&", 2) == 0)
+// 		return (OP_AND);
+// 	else if (ft_strncmp(value, "&", 1) == 0)
+// 		return (OP_BACKGROUND);
+// 	return (TOKEN_EOF);
+// }

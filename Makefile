@@ -64,8 +64,11 @@ SOURCES_MANDATORY := \
 	main.c \
 	minishell.c \
 	signals.c \
+	command/command_list.c \
+	command/command_node.c \
 	env/env_list.c \
 	env/env_node.c \
+	exec/cmd_cd.c \
 	token/token_extended.c \
 	token/token_list.c \
 	token/token_node.c
@@ -84,7 +87,9 @@ OBJECTS_DIR := .objects
 DEBUG := -D DEBUG=1
 
 $(OBJECTS_DIR):
+	mkdir -p $@/command
 	mkdir -p $@/env
+	mkdir -p $@/exec
 	mkdir -p $@/token
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
@@ -103,12 +108,20 @@ clean:
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
 	@$(SLEEP)
-	@if [ -d  $(OBJECTS_DIR)/token ]; then \
-		$(RM_DIR) $(OBJECTS_DIR)/token; \
+	@if [ -d  $(OBJECTS_DIR)/command ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/command; \
 	fi
 	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR)/env ]; then \
 		$(RM_DIR) $(OBJECTS_DIR)/env; \
+	fi
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/exec ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/exec; \
+	fi
+	@$(SLEEP)
+	@if [ -d  $(OBJECTS_DIR)/token ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/token; \
 	fi
 	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR) ]; then \
@@ -118,7 +131,6 @@ fclean: clean
 
 re: fclean all
 
-# --suppressions=readline.supp
 debug: re
 	-valgrind \
 		--leak-check=full \

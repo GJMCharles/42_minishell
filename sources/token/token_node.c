@@ -42,7 +42,6 @@ t_token	*create_node_token(void)
 	node = (t_token *) ft_calloc(sizeof(t_token), 1);
 	if (!node)
 		return (perror("failed to allocate 'struct s_token'"), NULL);
-	node->type = OP_EOF;
 	node->value = NULL;
 	node->next = NULL;
 	return (node);

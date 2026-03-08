@@ -21,12 +21,9 @@
 # include "_env.h"
 # include "_signals.h"
 # include "_token.h"
+# include "_command.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-
-typedef unsigned long int	t_uli;
-typedef unsigned int		t_ui;
-typedef unsigned char		t_uc;
 
 typedef struct s_shell
 {
@@ -37,4 +34,4 @@ void		destroy_minishell(t_shell *minishell);
 int			execute_minishell(t_shell *minishell);
 int			setup_minishell(t_shell *minishell, char **envp);
 
-#endif
+#endif // MINISHELL_H
