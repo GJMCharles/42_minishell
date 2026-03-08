@@ -29,9 +29,12 @@ typedef struct s_cmd
 typedef struct s_cmd_pipeline
 {
 	struct s_cmd	**commands;
-	int				nb_commands;
 	int				*operators;
+	int				nb_commands;
 }	t_cmd_pipeline;
+
+t_cmd_pipeline		*parse_token(t_token *tokens);
+void				*init_command_pipeline(t_cmd_pipeline **pipe, t_cmd **cmd);
 
 void				handle_heredoc(void);
 void				handle_infile(void);
