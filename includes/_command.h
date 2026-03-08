@@ -26,15 +26,15 @@ typedef struct s_cmd
 	int				argc;
 }	t_cmd;
 
-typedef struct s_cmd_pipeline
+typedef struct s_pipe
 {
 	struct s_cmd	**commands;
 	int				*operators;
 	int				nb_commands;
-}	t_cmd_pipeline;
+}	t_pipe;
 
-t_cmd_pipeline		*parse_token(t_token *tokens);
-void				*init_command_pipeline(t_cmd_pipeline **pipe, t_cmd **cmd);
+t_pipe				*parse_token(t_token *tokens);
+void				*init_command_pipeline(t_pipe **pipe, t_cmd **cmd);
 
 void				handle_heredoc(void);
 void				handle_infile(void);

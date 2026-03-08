@@ -12,9 +12,9 @@
 
 #include "_command.h"
 
-t_cmd_pipeline  *parse_token(t_token *tokens)
+t_pipe  *parse_token(t_token *tokens)
 {
-	t_cmd_pipeline	*pipe;
+	t_pipe	*pipe;
 	t_cmd			*cmd;
 
 	(void) tokens;
@@ -28,14 +28,14 @@ t_cmd_pipeline  *parse_token(t_token *tokens)
 	return (NULL);
 }
 
-void	*init_command_pipeline(t_cmd_pipeline **pipe, t_cmd **cmd)
+void	*init_command_pipeline(t_pipe **pipe, t_cmd **cmd)
 {
 	*pipe = NULL;
 	*cmd = NULL;
 	// *pipe
-	*pipe = (t_cmd_pipeline *) ft_calloc(sizeof(t_cmd_pipeline), 1);
+	*pipe = (t_pipe *) ft_calloc(sizeof(t_pipe), 1);
 	if (!*pipe)
-		return (perror("failed to allocate 'struct s_cmd_pipe'"), NULL);
+		return (perror("failed to allocate 'struct s_pipe'"), NULL);
 	// (*pipe)->commands
 	(*pipe)->commands = (t_cmd **) ft_calloc(sizeof(t_cmd *), 1);
 	if (!(*pipe)->commands)
