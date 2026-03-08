@@ -13,6 +13,12 @@
 #ifndef _COMMAND_H
 # define _COMMAND_H
 
+typedef struct s_cmd
+{
+	//
+	struct s_cmd	*next;
+}	t_cmd;
+
 void			handle_heredoc(void);
 void			handle_infile(void);
 void			handle_append(void);

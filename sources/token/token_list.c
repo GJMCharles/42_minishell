@@ -47,7 +47,7 @@ t_token	*tokenize(const char *input)
 	while (input[i])
 	{
 		c = (unsigned int) input[i];
-		if (c == 32)
+		if (c == 9 || c == 10 || c == 32)
 		{
 			i += 1;
 			continue ;
