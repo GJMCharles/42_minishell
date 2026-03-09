@@ -12,6 +12,21 @@
 
 #include "_token.h"
 
+size_t	token_count(t_token *tokens)
+{
+	size_t		count;
+	t_token		*tmp;
+
+	count = 0;
+	tmp = tokens;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		count += 1;
+	}
+	return (count);
+}
+
 /**
  * void	destroy_token_list(t_token **list);
  */
@@ -30,36 +45,4 @@ void	destroy_token_list(t_token **list)
 		*list = NULL;
 		*list = next;
 	}
-}
-
-/**
- * t_token	*tokenize(const char *input);
- */
-t_token	*tokenize(const char *input)
-{
-	int				i;
-	unsigned char	c;
-	t_token			*token_list;
-	int				status;
-
-	i = 0;
-	token_list = NULL;
-	while (input[i])
-	{
-		c = (unsigned int) input[i];
-		if (c == 9 || c == 10 || c == 32)
-		{
-			i += 1;
-			continue ;
-		}
-		else if (c == ';' || c == '<' || c == '>' || c == '|' || c == '&')
-			status = tokenize_operator(input + i, &i, &token_list);
-		else if (c == '"' || c == '\'')
-			status = tokenize_quotes(input + i, &i, &token_list);
-		else
-			status = tokenize_word(input + i, &i, &token_list);
-		if (status == -1)
-			break ;
-	}
-	return (token_list);
 }
