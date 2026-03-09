@@ -22,7 +22,7 @@
 # include "_signals.h"
 # include "_token.h"
 # include "_command.h"
-# include <readline/history.h>
+# include "_exec.h"
 # include <readline/readline.h>
 
 typedef struct s_shell
@@ -30,8 +30,8 @@ typedef struct s_shell
 	t_env					*head_env;
 }	t_shell;
 
-void		destroy_minishell(t_shell *minishell);
-int			execute_minishell(t_shell *minishell);
-int			setup_minishell(t_shell *minishell, char **envp);
+void			destroy_minishell(t_shell *minishell);
+int				execute_minishell(t_shell *minishell);
+int				setup_minishell(t_shell *minishell, char **envp);
 
 #endif // MINISHELL_H

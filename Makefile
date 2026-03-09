@@ -64,13 +64,16 @@ SOURCES_MANDATORY := \
 	main.c \
 	minishell.c \
 	signals.c \
+	command/build_command.c \
 	command/command_list.c \
 	command/command_node.c \
+	command/command_pipeline_list.c \
+	command/command_pipeline_node.c \
 	env/env_list.c \
 	env/env_node.c \
-	token/token_extended.c \
 	token/token_list.c \
-	token/token_node.c
+	token/token_node.c \
+	token/tokenize.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \

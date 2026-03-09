@@ -26,20 +26,23 @@ void	destroy_minishell(t_shell *minishell)
  */
 int	execute_minishell(t_shell *minishell)
 {
-	char		prompt[14];
-	char		*line;
-	t_token		*token_list;
+	char			prompt[14];
+	char			*line;
+	t_token			*token_list;
+	t_cmd_pipeline	*command_pipeline;
 
 	(void) minishell;
 	ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
+	
 	while (get_exit_status() == 0)
 	{
 		//line = readline(prompt);
 		line = ft_strdup("      echo -e \"TEST 1 2 3\" && ls -lah ;; pwd || echo \'Yes, I am here 😜\'");
 		token_list = tokenize(line);
-		ft_putendl_fd(line, STDOUT_FILENO);
-		destroy_token_list(&token_list);
 		free(line);
+		command_pipeline = build_command_pipeline(token_list);
+		destroy_token_list(&token_list);
+		destroy_command_pipeline(&command_pipeline);
 		break ;
 	}
 	return (EXIT_SUCCESS);
