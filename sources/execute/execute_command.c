@@ -48,8 +48,10 @@ int	execute_command(t_cmd *cmd, int input_fd, int output_fd, int *bg_pid)
 		{
 			char *heredoc_content = read_heredoc(cmd->heredoc_delimiter);
 			int pipefd[2];
-			pipe(pipefd);
-			write(pipefd[1], heredoc_content, ft_strlen(heredoc_content));
+			if (pipe(pipefd) < 0)
+				exit(EXIT_FAILURE);
+			if (write(pipefd[1], heredoc_content, ft_strlen(heredoc_content)) < 0)
+				exit(EXIT_FAILURE);
 			close(pipefd[1]);
 			dup2(pipefd[0], STDIN_FILENO);
 			close(pipefd[0]);

@@ -1,7 +1,5 @@
 #include "_execute.h"
 
-
-
 int	execute_pipeline(t_cmd_pipeline *pipeline)
 {
 	t_opt_pipe	option;
@@ -27,7 +25,10 @@ int	execute_pipeline(t_cmd_pipeline *pipeline)
 				continue;
 		}
 		if (op == TOKEN_PIPE)
-			pipe(option.next_pipe);
+		{
+			if (pipe(option.next_pipe) < 0)
+				exit(EXIT_FAILURE);
+		}
 
 		int output_fd = (op == TOKEN_PIPE) ? option.next_pipe[1] : STDOUT_FILENO;
 		int bg_pid = 0;

@@ -31,9 +31,8 @@ int	execute_minishell(t_shell *minishell)
 	ft_strlcpy(prompt, "~[ 💻 ] $> ", 14);
 	while (get_exit_status() == 0)
 	{
-		//line = readline(prompt);
-		// TEST
-		minishell->line = ft_strdup("      echo -e \"TEST 1 2 3\" && ls -lah ;; pwd || echo \'Yes, I am here 😜\'");
+		minishell->line = readline(prompt);
+		// minishell->line = ft_strdup("      echo -e \"TEST 1 2 3\" && ls -lah ;; pwd || echo \'Yes, I am here 😜\'");
 		if (ft_strncmp(minishell->line, "exit", 4) == 0)
 		{
 			free(minishell->line);
@@ -43,9 +42,8 @@ int	execute_minishell(t_shell *minishell)
 		free(minishell->line);
 		minishell->pipeline = build_commands_pipeline(minishell->token_list);
 		destroy_token_list(&minishell->token_list);
-		// execute_pipeline(minishell->pipeline);
+		execute_pipeline(minishell->pipeline);
 		destroy_command_pipeline(&minishell->pipeline);
-		break ;
 	}
 	return (EXIT_SUCCESS);
 }

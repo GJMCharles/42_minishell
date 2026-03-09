@@ -18,6 +18,9 @@ typedef struct s_opt_pipe
 	int		nb_bg;
 }	t_opt_pipe;
 
+char	*read_heredoc(const char *delimiter);
+int		execute_command(t_cmd *cmd, int input_fd, int output_fd, int *bg_pid);
+
 int		execute_pipeline(t_cmd_pipeline *pipeline);
 
 #endif // _EXECUTE_H
