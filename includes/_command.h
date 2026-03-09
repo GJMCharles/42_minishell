@@ -25,7 +25,6 @@
 #  define MAX_LINE_LENGTH 4096
 # endif
 
-# include "libft.h"
 # include "_token.h"
 
 typedef struct s_cmd
@@ -46,20 +45,20 @@ typedef struct s_cmd_pipeline
 	int					nb_commands;
 }	t_cmd_pipeline;
 
-typedef struct s_cmd_build
+typedef struct s_opt_cmd
 {
 	int					expecting_filename;
 	int					expecting_heredoc;
 	t_token_type		last_token;
-}	t_cmd_build;
+}	t_opt_cmd;
 
 /**
  * build_command.c
  */
 void					build_commands_extended_others(t_cmd_pipeline **pipeline, t_cmd **cmd);
 void					build_commands_extended_special(t_cmd_pipeline **pipeline, t_cmd **cmd, t_token *token, size_t length);
-void					build_commands_extended_redirection(t_cmd_build *options, t_token_type token_type);
-void					build_commands_extended_word(t_cmd_build *options, t_cmd **cmd, char *value);
+void					build_commands_extended_redirection(t_opt_cmd *options, t_token_type token_type);
+void					build_commands_extended_word(t_opt_cmd *options, t_cmd **cmd, char *value);
 t_cmd_pipeline			*build_commands_pipeline(t_token *tokens);
 
 

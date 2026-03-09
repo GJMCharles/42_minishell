@@ -25,13 +25,13 @@ void	build_commands_extended_special(t_cmd_pipeline **pipeline, t_cmd **cmd, t_t
 		(*cmd)->background = 1;
 }
 
-void	build_commands_extended_redirection(t_cmd_build *options, t_token_type token_type)
+void	build_commands_extended_redirection(t_opt_cmd *options, t_token_type token_type)
 {
 	options->expecting_filename = 1;
 	options->last_token = token_type;
 }
 
-void	build_commands_extended_word(t_cmd_build *options, t_cmd **cmd, char *value)
+void	build_commands_extended_word(t_opt_cmd *options, t_cmd **cmd, char *value)
 {
 	if (options->expecting_filename)
 	{
@@ -62,10 +62,10 @@ t_cmd_pipeline  *build_commands_pipeline(t_token *tokens)
 {
 	t_cmd_pipeline	*pipeline;
 	t_cmd			*cmd;
-	t_cmd_build		options;
+	t_opt_cmd		options;
 	t_token			*t;
 
-	options = (t_cmd_build) { 0, 0, TOKEN_SEMICOLON };
+	options = (t_opt_cmd) { 0, 0, TOKEN_SEMICOLON };
 	if (!create_command_pipeline(&pipeline))
 		return (NULL);
 	if (!create_command(&cmd, token_count(tokens)))

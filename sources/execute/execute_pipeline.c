@@ -1,59 +1,65 @@
 #include "_execute.h"
 
-// int	execute_pipeline(t_cmd_pipeline *pipeline)
-// {
-// 	int		status;
-// 	int		prev_pipe[2];
-// 	int		next_pipe[2];
-// 	int		input_fd;
-// 	pid_t	bg_pids[MAX_COMMANDS];
-// 	int		num_bg;
-// 	int		i;
 
-// 	status = 0;
-// 	prev_pipe[0] = STDIN_FILENO;
-// 	prev_pipe[1] = STDOUT_FILENO;
-// 	input_fd = STDIN_FILENO;
-// 	num_bg = 0;
-// 	i = 0;
-// 	while (i < pipeline->nb_commands)
-// 	{
-// 		t_cmd	*cmd;
-// 		int		operator;
 
-// 		cmd = pipeline->commands[i];
-// 		operator = pipeline->operators[i];
+int	execute_pipeline(t_cmd_pipeline *pipeline)
+{
+	t_opt_pipe	option;
+	int			i;
 
-// 		if (i > 0)
-// 		{
-// 			int prev_op = pipeline->operators[i - 1];
-// 			if ((prev_op == TOKEN_AND && status != 0)
-// 				|| (prev_op == TOKEN_OR && status == 0))
-// 				continue ;
-// 		}
-// 		if (operator == TOKEN_PIPE)
-// 			pipe(next_pipe);
-// 		int output_fd = (operator == TOKEN_PIPE) ? next_pipe[1] : STDOUT_FILENO;
-// 		int bg_pid = 0;
+	option.status = 0;
+	ft_memcpy(option.prev_pipe,
+		(int[]){STDIN_FILENO, STDOUT_FILENO}, sizeof(option.prev_pipe));
+	ft_memcpy(option.next_pipe, (int[]){0, 0}, sizeof(option.next_pipe));
+	option.input_fd = STDIN_FILENO;
+	option.nb_bg = 0;
+	i = 0;
+	while (i < pipeline->nb_commands)
+	{
+		t_cmd	*cmd = pipeline->commands[i];
+		t_token_type op = pipeline->operators[i];
 
-// 		status = execute_command(cmd, input_fd, output_fd, &bg_pid);
-// 		if (cmd->background && bg_pid > 0)
-// 			bg_pids[num_bg++] = bg_pid;
+		if (i > 0)
+		{
+			int prev_op = pipeline->operators[i - 1];
+			if ((prev_op == TOKEN_AND && option.status != 0)
+				|| (prev_op == TOKEN_OR && option.status == 0))
+				continue;
+		}
+		if (op == TOKEN_PIPE)
+			pipe(option.next_pipe);
 
-// 		if (input_fd != STDIN_FILENO)
-// 			close(input_fd);
-// 		if (operator == TOKEN_PIPE)
-// 		{
-// 			close(next_pipe[1]);
-// 			input_fd = next_pipe[0];
-// 		}
-// 		else
-// 			input_fd = STDIN_FILENO;
-// 		if (cmd->background)
-// 		{
-// 			//
-// 		}
-// 		i += 1;
-// 	}
-// 	return (status);
-// }
+		int output_fd = (op == TOKEN_PIPE) ? option.next_pipe[1] : STDOUT_FILENO;
+		int bg_pid = 0;
+
+		if (cmd->background) {
+			option.status = execute_command(cmd, option.input_fd, output_fd, &bg_pid);
+			if (bg_pid > 0)
+				option.bg_pids[option.nb_bg++] = bg_pid;
+		}
+		else
+		{
+			option.status = execute_command(cmd, option.input_fd, output_fd, &bg_pid);
+		}
+
+		if (op == TOKEN_PIPE)
+		{
+			close(option.next_pipe[1]);
+			if (option.input_fd != STDIN_FILENO)
+				close(option.input_fd);
+			option.input_fd = option.next_pipe[0];
+		} else
+		{
+			if (option.input_fd != STDIN_FILENO)
+				close(option.input_fd);
+			option.input_fd = STDIN_FILENO;
+		}
+
+		if (cmd->background)
+		{
+            // Don't wait, just continue
+        }
+		i += 1;
+	}
+	return (option.status);
+}
