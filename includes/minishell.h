@@ -22,12 +22,16 @@
 # include "_signals.h"
 # include "_token.h"
 # include "_command.h"
-# include "_exec.h"
+# include "_execute.h"
+# include <readline/history.h>
 # include <readline/readline.h>
 
 typedef struct s_shell
 {
-	t_env					*head_env;
+	t_env			*head_env;
+	char			*line;
+	t_token			*token_list;
+	t_cmd_pipeline	*pipeline;
 }	t_shell;
 
 void			destroy_minishell(t_shell *minishell);

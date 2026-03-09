@@ -6,6 +6,10 @@
 				"${default}",
 				"${workspaceFolder}/includes",
 				"${workspaceFolder}/sources",
+				"${workspaceFolder}/sources/command",
+				"${workspaceFolder}/sources/env",
+				"${workspaceFolder}/sources/execute",
+				"${workspaceFolder}/sources/token",
 				"${workspaceFolder}/modules/libft"
 			],
 			"defines": [],
@@ -19,6 +23,10 @@
 				"${default}",
 				"${workspaceFolder}/includes",
 				"${workspaceFolder}/sources",
+				"${workspaceFolder}/sources/command",
+				"${workspaceFolder}/sources/env",
+				"${workspaceFolder}/sources/execute",
+				"${workspaceFolder}/sources/token",
 				"${workspaceFolder}/modules/libft"
 			],
 			"defines": [],

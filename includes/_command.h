@@ -56,18 +56,18 @@ typedef struct s_cmd_build
 /**
  * build_command.c
  */
-void					build_command_extended_others(t_cmd_pipeline **pipe, t_cmd **cmd);
-void					build_command_extended_special(t_cmd_pipeline **pipe, t_cmd **cmd, t_token *token, size_t length);
-void					build_command_extended_redirection(t_cmd_build *options, t_token_type token_type);
-void					build_command_extended_word(t_cmd_build *options, t_cmd **cmd, char *value);
-t_cmd_pipeline			*build_command_pipeline(t_token *tokens);
+void					build_commands_extended_others(t_cmd_pipeline **pipeline, t_cmd **cmd);
+void					build_commands_extended_special(t_cmd_pipeline **pipeline, t_cmd **cmd, t_token *token, size_t length);
+void					build_commands_extended_redirection(t_cmd_build *options, t_token_type token_type);
+void					build_commands_extended_word(t_cmd_build *options, t_cmd **cmd, char *value);
+t_cmd_pipeline			*build_commands_pipeline(t_token *tokens);
 
 
 /**
  * command_pipeline_node.c
  */
-void					destroy_command_pipeline(t_cmd_pipeline **pipe);
-int						create_command_pipeline(t_cmd_pipeline **pipe);
+void					destroy_command_pipeline(t_cmd_pipeline **pipeline);
+int						create_command_pipeline(t_cmd_pipeline **pipeline);
 
 /**
  * command_node.c

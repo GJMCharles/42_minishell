@@ -28,6 +28,12 @@ void	destroy_command(t_cmd **cmd)
 			i += 1;
 		}
 		free(tmp_cmd->args);
+		if (tmp_cmd->infile)
+			free(tmp_cmd->infile);
+		if (tmp_cmd->outfile)
+			free(tmp_cmd->outfile);
+		if (tmp_cmd->heredoc_delimiter)
+			free(tmp_cmd->heredoc_delimiter);
 		free(tmp_cmd);
 	}
 	tmp_cmd = NULL;
