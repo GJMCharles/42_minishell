@@ -64,14 +64,16 @@ SOURCES_MANDATORY := \
 	main.c \
 	minishell.c \
 	signals.c \
-	command/command_list.c \
+	command/build_command.c \
 	command/command_node.c \
+	command/command_pipeline_node.c \
 	env/env_list.c \
 	env/env_node.c \
-	exec/cmd_cd.c \
-	token/token_extended.c \
+	execute/execute_command.c \
+	execute/execute_pipeline.c \
 	token/token_list.c \
-	token/token_node.c
+	token/token_node.c \
+	token/tokenize.c
 
 OBJECTS_MANDATORY := $(patsubst $(SOURCES)/%.c, \
 	.objects/%.o, \
@@ -89,7 +91,7 @@ DEBUG := -D DEBUG=1
 $(OBJECTS_DIR):
 	mkdir -p $@/command
 	mkdir -p $@/env
-	mkdir -p $@/exec
+	mkdir -p $@/execute
 	mkdir -p $@/token
 
 $(OBJECTS_DIR)/%.o: $(SOURCES)/%.c | $(OBJECTS_DIR)
@@ -116,8 +118,8 @@ fclean: clean
 		$(RM_DIR) $(OBJECTS_DIR)/env; \
 	fi
 	@$(SLEEP)
-	@if [ -d  $(OBJECTS_DIR)/exec ]; then \
-		$(RM_DIR) $(OBJECTS_DIR)/exec; \
+	@if [ -d  $(OBJECTS_DIR)/execute ]; then \
+		$(RM_DIR) $(OBJECTS_DIR)/execute; \
 	fi
 	@$(SLEEP)
 	@if [ -d  $(OBJECTS_DIR)/token ]; then \

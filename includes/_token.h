@@ -38,18 +38,19 @@ typedef struct s_token
 }	t_token;
 
 /**
- * token_extended.c
+ * tokenize.c
  */
 t_token_type	tokenize_get_operator(char *value);
 int				tokenize_operator(const char *input, int *i, t_token **list);
 int				tokenize_quotes(const char *input, int *i, t_token **list);
 int				tokenize_word(const char *input, int *i, t_token **list);
+t_token			*tokenize(const char *input);
 
 /**
  * token_list.c
  */
+size_t			token_count(t_token *tokens);
 void			destroy_token_list(t_token **list);
-t_token			*tokenize(const char *input);
 
 /**
  * token_node.c

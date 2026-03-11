@@ -13,36 +13,76 @@
 #ifndef _COMMAND_H
 # define _COMMAND_H
 
+# ifndef MAX_COMMANDS
+#  define MAX_COMMANDS 100
+# endif
+
+# ifndef MAX_HEREDOC_LINES
+#  define MAX_HEREDOC_LINES 1000
+# endif
+
+# ifndef MAX_LINE_LENGTH
+#  define MAX_LINE_LENGTH 4096
+# endif
+
 # include "_token.h"
 
 typedef struct s_cmd
 {
-	char			**args;
-	char			*infile;
-	char			*outfile;
-	char			*heredoc_delimiter;
-	int				append_mode;
-	int				background;
-	int				argc;
+	int					argc;
+	char				**args;
+	char				*infile;
+	char				*outfile;
+	char				*heredoc_delimiter;
+	int					append_mode;
+	int					background;
 }	t_cmd;
 
-typedef struct s_cmd_pipeline
+typedef struct s_pipe
 {
-	struct s_cmd	**commands;
-	int				*operators;
-	int				nb_commands;
+	struct s_cmd		**commands;
+	enum e_token_type	*operators;
+	int					nb_commands;
 }	t_cmd_pipeline;
 
-t_cmd_pipeline		*parse_token(t_token *tokens);
-void				*init_command_pipeline(t_cmd_pipeline **pipe, t_cmd **cmd);
+typedef struct s_opt_cmd
+{
+	int					expecting_filename;
+	int					expecting_heredoc;
+	t_token_type		last_token;
+}	t_opt_cmd;
 
-void				handle_heredoc(void);
-void				handle_infile(void);
-void				handle_append(void);
-void				handle_outfile(void);
-void				handle_ternary(void);
-void				handle_pipe(void);
-void				handle_and(void);
-void				handle_background(void);
+/**
+ * build_command.c
+ */
+void					build_commands_extended_others(t_cmd_pipeline **pipeline, t_cmd **cmd);
+void					build_commands_extended_special(t_cmd_pipeline **pipeline, t_cmd **cmd, t_token *token, size_t length);
+void					build_commands_extended_redirection(t_opt_cmd *options, t_token_type token_type);
+void					build_commands_extended_word(t_opt_cmd *options, t_cmd **cmd, char *value);
+t_cmd_pipeline			*build_commands_pipeline(t_token *tokens);
+
+
+/**
+ * command_pipeline_node.c
+ */
+void					destroy_command_pipeline(t_cmd_pipeline **pipeline);
+int						create_command_pipeline(t_cmd_pipeline **pipeline);
+
+/**
+ * command_node.c
+ */
+void					destroy_command(t_cmd **cmd);
+int						create_command(t_cmd **cmd, size_t max_length);
+
+/**
+void					handle_heredoc(void);
+void					handle_infile(void);
+void					handle_append(void);
+void					handle_outfile(void);
+void					handle_ternary(void);
+void					handle_pipe(void);
+void					handle_and(void);
+void					handle_background(void);
+*/
 
 #endif // _COMMAND_H

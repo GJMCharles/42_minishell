@@ -119,3 +119,35 @@ int	tokenize_word(const char *input, int *i, t_token **list)
 	*i += pos;
 	return (0);
 }
+
+/**
+ * t_token	*tokenize(const char *input);
+ */
+t_token	*tokenize(const char *input)
+{
+	int				i;
+	t_token			*token_list;
+	unsigned char	c;
+	int				status;
+
+	i = 0;
+	token_list = NULL;
+	while (input[i])
+	{
+		c = (unsigned char) input[i];
+		if (c == 9 || c == 10 || c == 32)
+		{
+			i += 1;
+			continue ;
+		}
+		else if (c == ';' || c == '<' || c == '>' || c == '|' || c == '&')
+			status = tokenize_operator(input + i, &i, &token_list);
+		else if (c == '"' || c == '\'')
+			status = tokenize_quotes(input + i, &i, &token_list);
+		else
+			status = tokenize_word(input + i, &i, &token_list);
+		if (status == -1)
+			break ;
+	}
+	return (token_list);
+}
